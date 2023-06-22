@@ -20,9 +20,9 @@ class RootTab extends GetView<RootTabController> {
     final controller = Get.put(RootTabController());
     final List<String> list = List.generate(10, (index) => 'Text $index');
     return Obx (()=> Scaffold(
-      body: homeIndex(),
+        body: homeIndex(),
         bottomNavigationBar:homeBottom())
-      );
+    );
   }
   Widget homeIndex() {
     return IndexedStack(
@@ -60,4 +60,3 @@ class RootTab extends GetView<RootTabController> {
     );
   }
 }
-
