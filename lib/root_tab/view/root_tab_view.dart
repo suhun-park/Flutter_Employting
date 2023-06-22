@@ -39,9 +39,9 @@ class RootTab extends GetView<RootTabController> {
       children: const [
         HomeScreen(),
         WebViewScreen(),
-        MyUserScreen(),
         HelpScreen(),
         EventScreen(),
+        MyUserScreen(),
       ],
     );
   }
