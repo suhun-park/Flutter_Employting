@@ -1,11 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutting/firebase_options.dart';
 import 'package:flutting/router/router_data.dart';
 import 'package:flutting/screen/splash_screen.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
@@ -20,12 +21,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Flutting',
-      getPages: GetRouter.getPages,
-      home: const SplashScreen(),
+    return ScreenUtilInit(
+      useInheritedMediaQuery: true,
+      designSize: const Size(393, 852),
+      builder: (context, child) {
+        return GetMaterialApp(
+          getPages: GetRouter.getPages,
+          home: const SplashScreen(),
+        );
+      },
     );
-
   }
 }
-
