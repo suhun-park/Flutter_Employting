@@ -1,24 +1,30 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutting/constant/colors.dart';
 
 class TextContainerLayout extends StatelessWidget {
   Widget? child;
-  TextContainerLayout({required this.child,Key? key}) : super(key: key);
+  TextContainerLayout({required this.child, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.centerLeft,
       width: double.infinity,
-      height: 40.sp,
+      height: 40.h,
       decoration: BoxDecoration(
-        border: Border.all(width: 0.1,color: Colors.black),
+        border: Border.all(
+          width: 0.1,
+          color: etBlack,
+        ),
       ),
       child: Padding(
-        padding: EdgeInsets.only(left: 12.sp, bottom: 10.sp, top : 9.sp,right: 13.sp),
-        child: child
-      )
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.w,
+          vertical: 10.h,
+        ),
+        child: child,
+      ),
     );
   }
 }
