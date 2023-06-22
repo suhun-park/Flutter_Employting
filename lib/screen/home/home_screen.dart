@@ -15,6 +15,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        heroTag: 'homeFAB',
         onPressed: () {
           Get.to(() => const HomeUploadScreen());
         },

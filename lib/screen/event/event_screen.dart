@@ -1,14 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutting/screen/event/event_detail_screen.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../../constant/colors.dart';
 import '../../constant/fonts.dart';
 import '../../constant/named_widget.dart';
-import '../home/home_detail_screen.dart';
-import '../home/home_upload_screen.dart';
 import 'event_upload_screen.dart';
 
 class EventScreen extends StatelessWidget {
@@ -18,6 +15,7 @@ class EventScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        heroTag: 'eventFAB',
         onPressed: () {
           Get.to(() => const EventUploadScreen());
         },
@@ -48,7 +46,7 @@ class EventScreen extends StatelessWidget {
                   Expanded(
                     flex: 70,
                     child: Text(
-                      '행사',
+                      '행사게시판',
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -59,18 +57,11 @@ class EventScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Expanded(
+                  const Expanded(
                     flex: 15,
                     child: Align(
                       alignment: Alignment.centerRight,
-                      child: GestureDetector(
-                        onTap: () {},
-                        child: Image.asset(
-                          'assets/images/icon/search_icon.png',
-                          width: 22.w,
-                          height: 22.h,
-                        ),
-                      ),
+                      child: SizedBox(),
                     ),
                   ),
                 ],
@@ -98,7 +89,7 @@ class EventScreen extends StatelessWidget {
                       child: GestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: () {
-                          Get.to(() => const HomeDetailScreen());
+                          Get.to(() => const EventDetailScreen());
                         },
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,22 +107,7 @@ class EventScreen extends StatelessWidget {
                               ),
                             ),
                             SizedBox(
-                              height: 5.h,
-                            ),
-                            Text(
-                              '마감까지 30일 남음',
-                              overflow: TextOverflow
-                                  .ellipsis, // Text가 overflow 현상이 일어나면 뒷부분을 ...으로 생략한다
-                              maxLines: 1,
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: 16.sp,
-                                fontWeight: medium,
-                                color: etGreen,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 5.h,
+                              height: 10.h,
                             ),
                             Text(
                               '캄퓨터정보학부 · 김태은',

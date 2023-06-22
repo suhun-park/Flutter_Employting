@@ -7,8 +7,8 @@ import 'package:flutting/constant/fonts.dart';
 import 'package:flutting/constant/named_widget.dart';
 import 'package:get/get.dart';
 
-class EventUploadScreen extends StatelessWidget {
-  const EventUploadScreen({Key? key}) : super(key: key);
+class HelpUploadScreen extends StatelessWidget {
+  const HelpUploadScreen({super.key});
 
   TextStyle inputTextDeco() => TextStyle(
         fontFamily: 'Pretendard',
@@ -96,7 +96,7 @@ class EventUploadScreen extends StatelessWidget {
                   Expanded(
                     flex: 70,
                     child: Text(
-                      '행사 등록',
+                      '질문 작성',
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -137,41 +137,7 @@ class EventUploadScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: 32.5.h,
-                  ),
-                  Text(
-                    '사진',
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: 18.sp,
-                      fontWeight: medium,
-                      color: etBlack,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15.h,
-                  ),
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Container(
-                        width: 96.w,
-                        height: 96.w,
-                        color: etGrey,
-                      ),
-                      const Icon(
-                        Icons.add,
-                        size: 60,
-                        color: etWhite,
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  divider,
-                  SizedBox(
-                    height: 20.h,
+                    height: 30.h,
                   ),
                   SizedBox(
                     height: 40.h,
@@ -198,6 +164,47 @@ class EventUploadScreen extends StatelessWidget {
                   ),
                   SizedBox(
                     height: 20.h,
+                  ),
+                  Text(
+                    '자기소개서 파일',
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: 18.sp,
+                      fontWeight: medium,
+                      color: etBlack,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width / 3.221311,
+                    height: 30.h,
+                    decoration: BoxDecoration(
+                      color: etLightGrey,
+                      borderRadius: BorderRadius.circular(5.r),
+                    ),
+                    alignment: Alignment.centerLeft,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/images/icon/pdf_icon.png',
+                          height: 18.h,
+                        ),
+                        SizedBox(width: 7.w),
+                        Text(
+                          'PDF 파일 업로드',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: 13.sp,
+                            fontWeight: medium,
+                            color: etWhite,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

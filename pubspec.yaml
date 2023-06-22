@@ -40,6 +40,7 @@ flutter:
 
   assets:
     - assets/images/navigation/
+    - assets/images/icon/
 
   fonts:
     - family: Pretendard
