@@ -3,14 +3,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutting/constant/colors.dart';
 import 'package:flutting/constant/fonts.dart';
 import 'package:flutting/constant/named_widget.dart';
+import 'package:flutting/screen/myuser/controller/myuser_controller.dart';
 import 'package:flutting/screen/myuser/layout/text_container_layout.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_state_manager/src/simple/get_view.dart';
 
 class MyUserScreen extends StatelessWidget {
   const MyUserScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    final MyUserController  _myUserController = Get.put(MyUserController());
+    return Obx (() =>Scaffold(
         body: SafeArea(
       child: Column(
         children: [
@@ -65,8 +70,7 @@ class MyUserScreen extends StatelessWidget {
                   height: 30.h,
                 ),
                 SizedBox(
-                  child: Text(
-                    "닉네임(12자 이내)",
+                  child: Text(_myUserController.myUserList[0].nickName!,
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontFamily: 'Pretendard',
@@ -260,6 +264,6 @@ class MyUserScreen extends StatelessWidget {
           )
         ],
       ),
-    ));
+    )));
   }
 }
