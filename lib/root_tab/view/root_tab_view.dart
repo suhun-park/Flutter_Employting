@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutting/screen/webview/webview_screen.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
 
+import '../../constant/colors.dart';
+import '../../constant/fonts.dart';
 import '../../screen/event/event_screen.dart';
 import '../../screen/help/help_screen.dart';
 import '../../screen/home/home_screen.dart';
@@ -19,15 +18,25 @@ class RootTab extends GetView<RootTabController> {
   Widget build(BuildContext context) {
     final controller = Get.put(RootTabController());
     final List<String> list = List.generate(10, (index) => 'Text $index');
-    return Obx (()=> Scaffold(
+    return Obx(
+      () => Scaffold(
         body: homeIndex(),
-        bottomNavigationBar:homeBottom())
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            border: Border(
+              top: BorderSide(color: etGrey, width: 1.w),
+            ),
+          ),
+          child: homeBottom(),
+        ),
+      ),
     );
   }
+
   Widget homeIndex() {
     return IndexedStack(
       index: controller.pageIndex.value,
-      children: [
+      children: const [
         HomeScreen(),
         WebViewScreen(),
         MyUserScreen(),
@@ -36,23 +45,55 @@ class RootTab extends GetView<RootTabController> {
       ],
     );
   }
+
+  Widget bottomNaviIcon(String icon, String label) {
+    return Column(
+      children: [
+        Image.asset('assets/images/navigation/$icon.png',
+            width: 25.w, height: 25.h),
+        SizedBox(height: 5.h),
+        Text(
+          label,
+          style: TextStyle(
+            fontFamily: 'Pretendard',
+            fontSize: 10.sp,
+            fontWeight: bold,
+            color: etDarkGrey,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget homeBottom() {
     List<BottomNavigationBarItem> bottomItems = [
-      BottomNavigationBarItem(icon: Icon(Icons.add),label: '홈'),
-      BottomNavigationBarItem(icon: Icon(Icons.add),label: '웹뷰'),
-      BottomNavigationBarItem(icon: Icon(Icons.add),label: '질문'),
-      BottomNavigationBarItem(icon: Icon(Icons.add),label: '행사안내'),
-      BottomNavigationBarItem(icon: Icon(Icons.add),label: '내정보'),
+      BottomNavigationBarItem(
+        icon: bottomNaviIcon('home', '채용공고'),
+        activeIcon: bottomNaviIcon('fill_home', '채용공고'),
+        label: '',
+      ),
+      BottomNavigationBarItem(
+          icon: bottomNaviIcon('compass', '취업게시판'),
+          activeIcon: bottomNaviIcon('fill_compass', '취업게시판'),
+          label: ''),
+      BottomNavigationBarItem(
+          icon: bottomNaviIcon('help', '질문게시판'),
+          activeIcon: bottomNaviIcon('fill_help', '질문게시판'),
+          label: ''),
+      BottomNavigationBarItem(
+          icon: bottomNaviIcon('event', '행사게시판'),
+          activeIcon: bottomNaviIcon('fill_event', '행사게시판'),
+          label: ''),
+      BottomNavigationBarItem(
+          icon: bottomNaviIcon('mypage', '내 정보'),
+          activeIcon: bottomNaviIcon('fill_mypage', '내 정보'),
+          label: ''),
     ];
     return BottomNavigationBar(
-
       onTap: controller.changePageIndex,
       type: BottomNavigationBarType.fixed,
-      backgroundColor: Colors.white,
-      selectedItemColor: Colors.black,
-      unselectedItemColor: Colors.black,
-      selectedFontSize: 12,
-      unselectedFontSize: 10,
+      backgroundColor: etWhite,
+      elevation: 0,
       currentIndex: controller.pageIndex.value,
       showSelectedLabels: true,
       showUnselectedLabels: true,
