@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutting/firebase_options.dart';
-import 'package:flutting/router/router_data.dart';
 import 'package:flutting/screen/splash_screen.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
@@ -12,7 +11,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(const MyApp(),);
 }
 
 class MyApp extends StatelessWidget {
@@ -25,9 +24,8 @@ class MyApp extends StatelessWidget {
       useInheritedMediaQuery: true,
       designSize: const Size(393, 852),
       builder: (context, child) {
-        return GetMaterialApp(
-          getPages: GetRouter.getPages,
-          home: const SplashScreen(),
+        return const GetMaterialApp(
+          home: SplashScreen(),
         );
       },
     );
