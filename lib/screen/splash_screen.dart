@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutting/root_tab/view/root_tab.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/route_manager.dart';
 
+import '../root_tab/view/root_tab_view.dart';
 import 'home/home_screen.dart';
 
 class SplashScreen extends StatelessWidget {
