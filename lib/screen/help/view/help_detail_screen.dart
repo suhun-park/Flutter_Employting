@@ -51,7 +51,7 @@ class HelpDetailScreen extends StatelessWidget {
                           child: Padding(
                             padding: EdgeInsets.zero,
                             child: Icon(
-                              Icons.arrow_back_ios_new,
+                              Icons.arrow_back_ios,
                               color: etDarkGrey,
                               size: 22.0.h,
                             ),

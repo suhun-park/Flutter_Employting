@@ -450,7 +450,7 @@ class MyUserScreen extends GetView<MyUserController> {
                             Obx(
                               () => Text(
                                 controller.deptText.value == ""
-                                    ? "학과"
+                                    ? dept!
                                     : controller.deptText.value,
                                 style: inputTextDeco(),
                               ),
