@@ -17,7 +17,7 @@ class EventScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         heroTag: 'eventFAB',
         onPressed: () {
-          Get.to(() => const EventUploadScreen());
+          Get.to(() => EventUploadScreen());
         },
         child: Icon(
           Icons.add,

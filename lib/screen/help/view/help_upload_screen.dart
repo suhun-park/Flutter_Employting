@@ -178,32 +178,36 @@ class HelpUploadScreen extends StatelessWidget {
                     height: 10.h,
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width / 3.221311,
-                    height: 30.h,
                     decoration: BoxDecoration(
                       color: etLightGrey,
                       borderRadius: BorderRadius.circular(5.r),
                     ),
-                    alignment: Alignment.centerLeft,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/images/icon/pdf_icon.png',
-                          height: 18.h,
-                        ),
-                        SizedBox(width: 7.w),
-                        Text(
-                          'PDF 파일 업로드',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: 13.sp,
-                            fontWeight: medium,
-                            color: etWhite,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8.w,
+                        vertical: 8.w,
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image.asset(
+                            'assets/images/icon/pdf_icon.png',
+                            height: 18.h,
                           ),
-                        ),
-                      ],
+                          SizedBox(
+                            width: 7.w,
+                          ),
+                          Text(
+                            'PDF 파일 업로드',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: 13.sp,
+                              fontWeight: medium,
+                              color: etWhite,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
