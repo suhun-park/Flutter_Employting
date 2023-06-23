@@ -25,6 +25,7 @@ class HelpUploadController extends GetxController{
         'title': helpTitleText.value,
         'dateTime': dateTime,
         'content' : helpContentText.value,
+        'dept' : "컴퓨터정보학부"
       });
       helpIsLoading = false.obs;
       helpTitleText = "".obs;
