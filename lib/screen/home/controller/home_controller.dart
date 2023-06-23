@@ -12,6 +12,8 @@ class HomeController extends GetxController{
   TextEditingController searchController = TextEditingController();
   RxBool homeSearchLoading = false.obs;
   RxString homeSearchText = "".obs;
+  RxBool homePageLoading = true.obs;
+  RxList<HomeModel> homeSearchList = <HomeModel>[].obs;
   
 
 
@@ -26,35 +28,29 @@ class HomeController extends GetxController{
       return "$remainingDays일 남았습니다";
     }
   }
-
-
-
-  Future<List<HomeModel>> homeDataGet() async {
-    CollectionReference<Map<String, dynamic>> collectionReference =
-    FirebaseFirestore.instance.collection("help");
-    QuerySnapshot<Map<String, dynamic>> querySnapshot =
-    await collectionReference.get();
-
-    homeList.clear(); // 기존 데이터를 모두 제거
-
-    for (var element in querySnapshot.docs) {
-      homeList.add(HomeModel.fromJson(element.data()));
-    }
-
-
-    return homeList;
-  }
-
-
   Stream<List<HomeModel>> homeStreamDataGet() {
-    return FirebaseFirestore.instance.collection('home').orderBy('dateTime',descending: true).snapshots().map((snapshot) {
-      return snapshot.docs.map((doc) => HomeModel.fromJson(doc.data())).toList();
+    return FirebaseFirestore.instance
+        .collection('home')
+        .orderBy('dateTime', descending: true)
+        .snapshots()
+        .map((snapshot) {
+       homeList.value = snapshot.docs.map((doc) => HomeModel.fromJson(doc.data())).toList();
+      return homeList;
     });
   }
+
   void homeChangeText(value) {
     homeSearchText.value = value;
   }
- 
 
 
-}
+  Future<List<HomeModel>> searchData(String query,) async{
+    homeSearchList.value.clear();
+    for(HomeModel item in homeList.value) {
+      if (item.title!.contains(query)) {
+        homeSearchList.value.add(item);
+      }
+    }
+      return homeSearchList.value;
+    }
+  }
