@@ -125,6 +125,7 @@ class HelpUploadScreen extends StatelessWidget {
                               DateFormat('yyyyMMddHHmmss').format(now),
                               now,
                             );
+                            Get.back();
                           }
                               : () {},child:Text(
                           "완료",
