@@ -41,7 +41,7 @@ class RootTab extends GetView<RootTabController> {
         const WebViewScreen(),
         const HelpScreen(),
         EventScreen(),
-        const MyUserScreen(),
+        MyUserScreen(),
       ],
     );
   }

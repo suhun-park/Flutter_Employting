@@ -1,11 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
-import '../../../constant/colors.dart';
-import '../../../constant/fonts.dart';
-import '../../../constant/named_widget.dart';
 
 class WebViewScreen extends StatefulWidget {
   const WebViewScreen({Key? key}) : super(key: key);
@@ -15,14 +10,13 @@ class WebViewScreen extends StatefulWidget {
 }
 
 class _WebViewScreenState extends State<WebViewScreen> {
-
   final controller = WebViewController()
     ..setJavaScriptMode(JavaScriptMode.unrestricted)
     ..setBackgroundColor(const Color(0x00000000))
     ..setNavigationDelegate(
       NavigationDelegate(
         onProgress: (int progress) {
-          CircularProgressIndicator();
+          const CircularProgressIndicator();
         },
         onNavigationRequest: (NavigationRequest request) {
           if (request.url.startsWith('https://www.youtube.com/')) {
@@ -32,20 +26,46 @@ class _WebViewScreenState extends State<WebViewScreen> {
         },
       ),
     )
-    ..loadRequest(Uri.parse('https://job.daelim.ac.kr/cms/FrCon/index.do?MENU_ID=280#page1'));
+    ..loadRequest(Uri.parse('https://job.daelim.ac.kr/index.do'));
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-        children: [
-        // 타이틀
-        Expanded(child: WebViewWidget(
-          controller: controller,
-
-        ))
-        ])
-    ));
+        body: SafeArea(
+            child: Column(children: [
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GestureDetector(
+              onTap: () async {
+                if (await controller.canGoBack()) {
+                  controller.goBack();
+                }
+              },
+              child: Icon(Icons.arrow_back_ios, size: 28.h),
+            ),
+            GestureDetector(
+              onTap: () {
+                controller.reload();
+              },
+              child: Icon(Icons.refresh, size: 32.h),
+            ),
+            GestureDetector(
+              onTap: () {
+                controller.loadRequest(
+                    Uri.parse('https://job.daelim.ac.kr/index.do'));
+              },
+              child: Icon(Icons.home, size: 32.h),
+            ),
+          ],
+        ),
+      ),
+      Expanded(
+          child: WebViewWidget(
+        controller: controller,
+      ))
+    ])));
   }
 }

@@ -1,11 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutting/constant/colors.dart';
 import 'package:flutting/constant/fonts.dart';
 import 'package:flutting/constant/named_widget.dart';
+import 'package:flutting/main.dart';
 import 'package:flutting/root_tab/view/root_tab_view.dart';
 import 'package:flutting/screen/signin/controller/signin_controller.dart';
 import 'package:get/get.dart';
@@ -48,6 +51,13 @@ class SigninScreen extends StatelessWidget {
             color: etDarkGrey,
           ),
         ),
+        disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.zero,
+          borderSide: BorderSide(
+            width: 2.w,
+            color: etBlack,
+          ),
+        ),
       );
 
   @override
@@ -59,8 +69,32 @@ class SigninScreen extends StatelessWidget {
             .signInWithEmailAndPassword(
                 email: '${controller.emailText.value}@email.daelim.ac.kr',
                 password: controller.passwordText.value)
-            .then((value) {
+            .then((value) async {
           if (value.user!.emailVerified == true) {
+            await const FlutterSecureStorage().deleteAll();
+
+            DocumentSnapshot<Map<String, dynamic>> userData =
+                await FirebaseFirestore.instance
+                    .collection('user')
+                    .doc(value.user!.uid)
+                    .get();
+            await const FlutterSecureStorage()
+                .write(key: "uid", value: value.user!.uid);
+            await const FlutterSecureStorage()
+                .write(key: "email", value: '${userData.data()?['email']}');
+            await const FlutterSecureStorage().write(
+                key: "nickName", value: '${userData.data()?['nickName']}');
+            await const FlutterSecureStorage()
+                .write(key: "number", value: '${userData.data()?['number']}');
+            await const FlutterSecureStorage()
+                .write(key: "dept", value: '${userData.data()?['dept']}');
+
+            uid = await const FlutterSecureStorage().read(key: 'uid');
+            email = await const FlutterSecureStorage().read(key: 'email');
+            nickName = await const FlutterSecureStorage().read(key: 'nickName');
+            number = await const FlutterSecureStorage().read(key: 'number');
+            dept = await const FlutterSecureStorage().read(key: 'dept');
+
             controller.isLoading.value = false;
             Get.to(() => const RootTab());
           } else {
@@ -164,17 +198,21 @@ class SigninScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Expanded(
-                              child: TextField(
-                                style: inputTextDeco(),
-                                cursorColor: etBlack,
-                                decoration: null,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                      RegExp('[a-zA-Z0-9]')),
-                                ],
-                                onChanged: (value) {
-                                  controller.changeEmail(value);
-                                },
+                              child: Obx(
+                                () => TextField(
+                                  enabled:
+                                      controller.isLoading.value ? false : true,
+                                  style: inputTextDeco(),
+                                  cursorColor: etBlack,
+                                  decoration: null,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp('[a-zA-Z0-9]')),
+                                  ],
+                                  onChanged: (value) {
+                                    controller.changeEmail(value);
+                                  },
+                                ),
                               ),
                             ),
                             Text(
@@ -190,14 +228,17 @@ class SigninScreen extends StatelessWidget {
                     ),
                     SizedBox(
                       height: 45.h,
-                      child: TextField(
-                        obscureText: true, // 비밀번호 가리기
-                        style: inputTextDeco(),
-                        decoration: inputDeco('비밀번호(6자 이상)'),
-                        cursorColor: etBlack,
-                        onChanged: (value) {
-                          controller.changePassword(value);
-                        },
+                      child: Obx(
+                        () => TextField(
+                          enabled: controller.isLoading.value ? false : true,
+                          obscureText: true, // 비밀번호 가리기
+                          style: inputTextDeco(),
+                          decoration: inputDeco('비밀번호(6자 이상)'),
+                          cursorColor: etBlack,
+                          onChanged: (value) {
+                            controller.changePassword(value);
+                          },
+                        ),
                       ),
                     ),
                     const Expanded(

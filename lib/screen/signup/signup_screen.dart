@@ -49,6 +49,13 @@ class SignUpScreen extends StatelessWidget {
             color: etDarkGrey,
           ),
         ),
+        disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.zero,
+          borderSide: BorderSide(
+            width: 2.w,
+            color: etBlack,
+          ),
+        ),
       );
 
   final List<String> _deptList = [
@@ -126,6 +133,7 @@ class SignUpScreen extends StatelessWidget {
                 'number': controller.numberText.value,
                 'dept': controller.deptText.value,
               });
+              FirebaseAuth.instance.currentUser?.sendEmailVerification();
               controller.isLoading.value = false;
               showCupertinoDialog(
                 context: context,
@@ -246,17 +254,21 @@ class SignUpScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Expanded(
-                              child: TextField(
-                                style: inputTextDeco(),
-                                decoration: null,
-                                cursorColor: etBlack,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                      RegExp('[a-zA-Z0-9]')),
-                                ],
-                                onChanged: (value) {
-                                  controller.changeEmail(value);
-                                },
+                              child: Obx(
+                                () => TextField(
+                                  enabled:
+                                      controller.isLoading.value ? false : true,
+                                  style: inputTextDeco(),
+                                  decoration: null,
+                                  cursorColor: etBlack,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp('[a-zA-Z0-9]')),
+                                  ],
+                                  onChanged: (value) {
+                                    controller.changeEmail(value);
+                                  },
+                                ),
                               ),
                             ),
                             Text(
@@ -272,14 +284,17 @@ class SignUpScreen extends StatelessWidget {
                     ),
                     SizedBox(
                       height: 45.h,
-                      child: TextField(
-                        obscureText: true, // 비밀번호 가리기
-                        style: inputTextDeco(),
-                        decoration: inputDeco('비밀번호(6자 이상)'),
-                        cursorColor: etBlack,
-                        onChanged: (value) {
-                          controller.changePassword(value);
-                        },
+                      child: Obx(
+                        () => TextField(
+                          enabled: controller.isLoading.value ? false : true,
+                          obscureText: true, // 비밀번호 가리기
+                          style: inputTextDeco(),
+                          decoration: inputDeco('비밀번호(6자 이상)'),
+                          cursorColor: etBlack,
+                          onChanged: (value) {
+                            controller.changePassword(value);
+                          },
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -287,14 +302,17 @@ class SignUpScreen extends StatelessWidget {
                     ),
                     SizedBox(
                       height: 45.h,
-                      child: TextField(
-                        obscureText: true, // 비밀번호 가리기
-                        style: inputTextDeco(),
-                        decoration: inputDeco('비밀번호 확인'),
-                        cursorColor: etBlack,
-                        onChanged: (value) {
-                          controller.changePasswordConfirm(value);
-                        },
+                      child: Obx(
+                        () => TextField(
+                          enabled: controller.isLoading.value ? false : true,
+                          obscureText: true, // 비밀번호 가리기
+                          style: inputTextDeco(),
+                          decoration: inputDeco('비밀번호 확인'),
+                          cursorColor: etBlack,
+                          onChanged: (value) {
+                            controller.changePasswordConfirm(value);
+                          },
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -302,18 +320,21 @@ class SignUpScreen extends StatelessWidget {
                     ),
                     SizedBox(
                       height: 45.h,
-                      child: TextField(
-                        style: inputTextDeco(),
-                        decoration: inputDeco('닉네임(12자 이하)'),
-                        cursorColor: etBlack,
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(12),
-                          FilteringTextInputFormatter.allow(
-                              RegExp(r'^[a-zA-Zㄱ-ㅎ가-힣0-923]+$')),
-                        ],
-                        onChanged: (value) {
-                          controller.changeNickName(value);
-                        },
+                      child: Obx(
+                        () => TextField(
+                          enabled: controller.isLoading.value ? false : true,
+                          style: inputTextDeco(),
+                          decoration: inputDeco('닉네임(12자 이하)'),
+                          cursorColor: etBlack,
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(12),
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'^[a-zA-Zㄱ-ㅎ가-힣0-923]+$')),
+                          ],
+                          onChanged: (value) {
+                            controller.changeNickName(value);
+                          },
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -321,17 +342,20 @@ class SignUpScreen extends StatelessWidget {
                     ),
                     SizedBox(
                       height: 45.h,
-                      child: TextField(
-                        style: inputTextDeco(),
-                        decoration: inputDeco('학번/교번'),
-                        cursorColor: etBlack,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(9),
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        onChanged: (value) {
-                          controller.changeNumber(value);
-                        },
+                      child: Obx(
+                        () => TextField(
+                          enabled: controller.isLoading.value ? false : true,
+                          style: inputTextDeco(),
+                          decoration: inputDeco('학번/교번'),
+                          cursorColor: etBlack,
+                          inputFormatters: <TextInputFormatter>[
+                            LengthLimitingTextInputFormatter(9),
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          onChanged: (value) {
+                            controller.changeNumber(value);
+                          },
+                        ),
                       ),
                     ),
                     SizedBox(
