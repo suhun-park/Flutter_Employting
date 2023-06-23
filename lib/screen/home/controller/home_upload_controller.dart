@@ -8,6 +8,8 @@ class HomeUploadController extends GetxController {
   RxString companyText = "".obs;
   RxString contentText = "".obs;
 
+
+
   void changeTitle(value) {
     titleText.value = value;
   }
@@ -51,5 +53,6 @@ class HomeUploadController extends GetxController {
       print(e.toString());
       isLoading = false.obs;
     }
+
   }
 }

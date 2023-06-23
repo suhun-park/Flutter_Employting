@@ -9,7 +9,8 @@ import 'package:flutting/screen/home/controller/home_upload_controller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../../constant/named_widget.dart';
+import '../../../constant/named_widget.dart';
+
 
 class HomeUploadScreen extends StatelessWidget {
   HomeUploadScreen({super.key});
