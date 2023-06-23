@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import '../../constant/colors.dart';
 import '../../constant/fonts.dart';
 import '../../screen/event/event_screen.dart';
-import '../../screen/help/help_screen.dart';
+import '../../screen/help/view/help_screen.dart';
 import '../../screen/home/home_screen.dart';
 import '../../screen/myuser/view/myuser_screen.dart';
 import '../controller/root_tab_controller.dart';

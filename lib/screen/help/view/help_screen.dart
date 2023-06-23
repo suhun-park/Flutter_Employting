@@ -3,15 +3,30 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutting/constant/colors.dart';
 import 'package:flutting/constant/fonts.dart';
 import 'package:flutting/constant/named_widget.dart';
-import 'package:flutting/screen/help/help_detail_screen.dart';
-import 'package:flutting/screen/help/help_upload_screen.dart';
+import 'package:flutting/screen/help/controller/help_controller.dart';
+import 'package:flutting/screen/help/view/help_detail_screen.dart';
 import 'package:get/get.dart';
 
-class HelpScreen extends StatelessWidget {
+import 'help_upload_screen.dart';
+
+class HelpScreen extends StatefulWidget {
   const HelpScreen({Key? key}) : super(key: key);
 
   @override
+  State<HelpScreen> createState() => _HelpScreenState();
+
+}
+
+class _HelpScreenState extends State<HelpScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
+  @override
   Widget build(BuildContext context) {
+    final HelpController _helpController = Get.put(HelpController());
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         heroTag: 'helpFAB',
@@ -78,7 +93,7 @@ class HelpScreen extends StatelessWidget {
                   horizontal: 20.w,
                 ),
                 child: ListView.separated(
-                  itemCount: 10,
+                  itemCount: _helpController.helpDataCount.value,
                   separatorBuilder: (context, index) => divider,
                   itemBuilder: (context, index) {
                     return Padding(
