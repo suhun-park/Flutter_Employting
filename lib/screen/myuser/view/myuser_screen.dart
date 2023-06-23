@@ -9,155 +9,153 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 
-class MyUserScreen extends StatelessWidget {
+class MyUserScreen extends GetView<MyUserController> {
   const MyUserScreen({Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
     final MyUserController  _myUserController = Get.put(MyUserController());
     return Scaffold(
         body: SafeArea(
-      child: Column(
-        children: [
-          topPadding,
-          SizedBox(
-            height: 10.h,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30.25.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Expanded(
-                  flex: 15,
-                  child: SizedBox(),
-                ),
-                Expanded(
-                  flex: 70,
-                  child: Text(
-                    '내 정보',
-                    textAlign: TextAlign.center,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: 28.sp,
-                      fontWeight: bold,
-                      color: etBlack,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          children: [
+            topPadding,
+            SizedBox(
+              height: 10.h,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30.25.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Expanded(
+                    flex: 15,
+                    child: SizedBox(),
+                  ),
+                  Expanded(
+                    flex: 70,
+                    child: Text(
+                      '내 정보',
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: 28.sp,
+                        fontWeight: bold,
+                        color: etBlack,
+                      ),
                     ),
                   ),
-                ),
-                const Expanded(
-                  flex: 15,
-                  child: Align(
-                      alignment: Alignment.centerRight, child: SizedBox()),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 18.5.h,
-          ),
-          divider,
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 20.w,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 30.h,
-                ),
-                SizedBox(
-                  child: Text("dd",
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontFamily: 'Pretendard',
-                      fontWeight: medium,
-                    ),
+                  const Expanded(
+                    flex: 15,
+                    child: Align(
+                        alignment: Alignment.centerRight, child: SizedBox()),
                   ),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                SizedBox(
-                  height: 40.h,
-                  child: TextField(
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: 18.sp,
-                      fontWeight: medium,
-                      color: etBlack,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: '닉네임',
-                      hintStyle: TextStyle(
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 18.5.h,
+            ),
+            divider,
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 20.w,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 30.h,
+                  ),
+                  GetBuilder<MyUserController>(
+                    builder: (context) {
+                      if (_myUserController.myUserList.isNotEmpty) {
+                        return SizedBox(
+                          child: Text(_myUserController.myUserList[0].email!,
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              fontFamily: 'Pretendard',
+                              fontWeight: medium,
+                            ),
+                          ),
+                        );
+                      } else {
+                        return SizedBox(); // 데이터가 없을 경우 빈 컨테이너 반환
+                      }
+                    },
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  SizedBox(
+                    height: 40.h,
+                    child: TextField(
+                      style: TextStyle(
                         fontFamily: 'Pretendard',
                         fontSize: 18.sp,
                         fontWeight: medium,
                         color: etBlack,
                       ),
-                      contentPadding: EdgeInsets.symmetric(
-                        vertical: 10.h,
-                        horizontal: 12.w,
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.zero,
-                        borderSide: BorderSide(
-                          width: 1.w,
-                          color: etLightGrey,
+                      decoration: InputDecoration(
+                        hintText: '닉네임',
+                        hintStyle: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: 18.sp,
+                          fontWeight: medium,
+                          color: etBlack,
                         ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.zero,
-                        borderSide: BorderSide(
-                          width: 1.w,
-                          color: etLightGrey,
+                        contentPadding: EdgeInsets.symmetric(
+                          vertical: 10.h,
+                          horizontal: 12.w,
                         ),
-                      ),
-                      disabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.zero,
-                        borderSide: BorderSide(
-                          width: 1.w,
-                          color: etDarkGrey,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.zero,
+                          borderSide: BorderSide(
+                            width: 1.w,
+                            color: etLightGrey,
+                          ),
                         ),
-                      ),
-                      suffixIcon: Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 8.h,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.zero,
+                          borderSide: BorderSide(
+                            width: 1.w,
+                            color: etLightGrey,
+                          ),
                         ),
-                        child: Text(
-                          "완료",
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: 18.sp,
-                            fontWeight: medium,
-                            color: etBlue,
+                        disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.zero,
+                          borderSide: BorderSide(
+                            width: 1.w,
+                            color: etDarkGrey,
+                          ),
+                        ),
+                        suffixIcon: Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 8.h,
+                          ),
+                          child: Text(
+                            "완료",
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: 18.sp,
+                              fontWeight: medium,
+                              color: etBlue,
+                            ),
                           ),
                         ),
                       ),
+                      cursorColor: etBlack,
                     ),
-                    cursorColor: etBlack,
                   ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                Text(
-                  "이메일",
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontFamily: 'Pretendard',
-                    fontWeight: medium,
-                    color: etBlack,
+                  SizedBox(
+                    height: 20.h,
                   ),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                TextContainerLayout(
-                  child: Text(
+                  Text(
                     "이메일",
                     style: TextStyle(
                       fontSize: 18.sp,
@@ -166,24 +164,24 @@ class MyUserScreen extends StatelessWidget {
                       color: etBlack,
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                Text(
-                  "학번",
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontFamily: 'Pretendard',
-                    fontWeight: medium,
-                    color: etBlack,
+                  SizedBox(
+                    height: 10.h,
                   ),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                TextContainerLayout(
-                  child: Text(
+                  TextContainerLayout(
+                    child: Text(
+                      "이메일",
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontFamily: 'Pretendard',
+                        fontWeight: medium,
+                        color: etBlack,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Text(
                     "학번",
                     style: TextStyle(
                       fontSize: 18.sp,
@@ -192,24 +190,24 @@ class MyUserScreen extends StatelessWidget {
                       color: etBlack,
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                Text(
-                  "구분",
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontFamily: 'Pretendard',
-                    fontWeight: medium,
-                    color: etBlack,
+                  SizedBox(
+                    height: 10.h,
                   ),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                TextContainerLayout(
-                  child: Text(
+                  TextContainerLayout(
+                    child: Text(
+                      "학번",
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontFamily: 'Pretendard',
+                        fontWeight: medium,
+                        color: etBlack,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Text(
                     "구분",
                     style: TextStyle(
                       fontSize: 18.sp,
@@ -218,24 +216,24 @@ class MyUserScreen extends StatelessWidget {
                       color: etBlack,
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                Text(
-                  "학과",
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontFamily: 'Pretendard',
-                    fontWeight: medium,
-                    color: etBlack,
+                  SizedBox(
+                    height: 10.h,
                   ),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                TextContainerLayout(
-                  child: Text(
+                  TextContainerLayout(
+                    child: Text(
+                      "구분",
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontFamily: 'Pretendard',
+                        fontWeight: medium,
+                        color: etBlack,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Text(
                     "학과",
                     style: TextStyle(
                       fontSize: 18.sp,
@@ -244,25 +242,39 @@ class MyUserScreen extends StatelessWidget {
                       color: etBlack,
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 30.h,
-                ),
-                divider,
-                SizedBox(height: 20.h),
-                Text(
-                  "로그아웃",
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: etLightGrey,
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.w500,
+                  SizedBox(
+                    height: 10.h,
                   ),
-                ),
-              ],
-            ),
-          )
-        ],
+                  TextContainerLayout(
+                    child: Text(
+                      "학과",
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontFamily: 'Pretendard',
+                        fontWeight: medium,
+                        color: etBlack,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30.h,
+                  ),
+                  divider,
+                  SizedBox(height: 20.h),
+                  Text(
+                    "로그아웃",
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: etLightGrey,
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     ));
   }

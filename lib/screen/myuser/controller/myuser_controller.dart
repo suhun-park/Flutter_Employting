@@ -11,7 +11,6 @@ class MyUserController extends GetxController{
 
   //데이터 불러오기
   Future<List<MyUserModel>> userDataGet() async{
-    final FirebaseAuth auth = FirebaseAuth.instance;
     CollectionReference<Map<String, dynamic>> collectionReference =
     FirebaseFirestore.instance.collection("user");
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
@@ -19,6 +18,7 @@ class MyUserController extends GetxController{
     for (var element in querySnapshot.docs) {
       if(myUserList.isEmpty){
         myUserList.add(MyUserModel.fromJson(element.data()));
+        print(element.data());
       }
       print(myUserList[0]);
     }
