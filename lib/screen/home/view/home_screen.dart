@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutting/constant/colors.dart';
 import 'package:flutting/constant/named_widget.dart';
+import 'package:flutting/main.dart';
 import 'package:flutting/screen/home/controller/home_controller.dart';
 import 'package:flutting/screen/home/model/home_model.dart';
 import 'package:flutting/screen/home/view/home_detail_screen.dart';
@@ -21,17 +22,19 @@ class HomeScreen extends StatelessWidget {
     String query = "";
     return Obx(
       () => Scaffold(
-        floatingActionButton: FloatingActionButton(
-          heroTag: 'homeFAB',
-          onPressed: () {
-            Get.to(() => HomeUploadScreen());
-          },
-          child: Icon(
-            Icons.add,
-            size: 30.h,
-            color: etWhite,
-          ),
-        ),
+        floatingActionButton: number!.length == 7
+            ? FloatingActionButton(
+                heroTag: 'homeFAB',
+                onPressed: () {
+                  Get.to(() => HomeUploadScreen());
+                },
+                child: Icon(
+                  Icons.add,
+                  size: 30.h,
+                  color: etWhite,
+                ),
+              )
+            : null,
         body: SafeArea(
           child: Column(
             children: [

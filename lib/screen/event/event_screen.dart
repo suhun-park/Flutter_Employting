@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutting/main.dart';
 import 'package:flutting/screen/event/controller/event_controller.dart';
 import 'package:flutting/screen/event/event_detail_screen.dart';
 import 'package:get/get.dart';
@@ -19,17 +20,19 @@ class EventScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        heroTag: 'eventFAB',
-        onPressed: () {
-          Get.to(() => EventUploadScreen());
-        },
-        child: Icon(
-          Icons.add,
-          size: 30.h,
-          color: etWhite,
-        ),
-      ),
+      floatingActionButton: number!.length == 7
+          ? FloatingActionButton(
+              heroTag: 'eventFAB',
+              onPressed: () {
+                Get.to(() => EventUploadScreen());
+              },
+              child: Icon(
+                Icons.add,
+                size: 30.h,
+                color: etWhite,
+              ),
+            )
+          : null,
       body: SafeArea(
         child: Column(
           children: [

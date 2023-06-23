@@ -12,15 +12,11 @@ import 'package:intl/intl.dart';
 import 'help_upload_screen.dart';
 
 class HelpScreen extends StatelessWidget {
-
   const HelpScreen({Key? key}) : super(key: key);
 
   @override
-
-
   Widget build(BuildContext context) {
-    final HelpController _helpController = Get.put(HelpController());
-    _helpController.helpDataGet();
+    final HelpController helpController = Get.put(HelpController());
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         heroTag: 'helpFAB',
@@ -87,16 +83,16 @@ class HelpScreen extends StatelessWidget {
                   horizontal: 20.w,
                 ),
                 child: StreamBuilder<List<HelpModel>>(
-                  initialData: _helpController.helpList,
-                    stream: _helpController.helpStreamDataGet(),
-                    builder: (context,snapshot) {
-                      print(_helpController.helpDataCount);
+                    initialData: helpController.helpList,
+                    stream: helpController.helpStreamDataGet(),
+                    builder: (context, snapshot) {
+                      print(helpController.helpDataCount);
                       return ListView.separated(
                         itemCount: snapshot.data!.length,
                         separatorBuilder: (context, index) => divider,
                         itemBuilder: (context, index) {
                           final formatDate = DateFormat(
-                              'yyyy년 M월 d일 a h시 mm분', 'ko_KR')
+                                  'yyyy년 M월 d일 a h시 mm분', 'ko_KR')
                               .format(snapshot.data![index].dateTime!.toDate());
                           return Padding(
                             padding: index == 0
@@ -105,19 +101,21 @@ class HelpScreen extends StatelessWidget {
                             child: GestureDetector(
                               behavior: HitTestBehavior.translucent,
                               onTap: () {
-                                Get.to(() => const HelpDetailScreen(),arguments: [
-                                  snapshot.data![index].title,
-                                  snapshot.data![index].content,
-                                  snapshot.data![index].nickName,
-                                  snapshot.data![index].dept,
-                                  snapshot.data![index].pdf,
-                                  formatDate,
-                                ]);
+                                Get.to(() => const HelpDetailScreen(),
+                                    arguments: [
+                                      snapshot.data![index].title,
+                                      snapshot.data![index].content,
+                                      snapshot.data![index].nickName,
+                                      snapshot.data![index].dept,
+                                      snapshot.data![index].pdf,
+                                      formatDate,
+                                    ]);
                               },
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(snapshot.data![index].title!,
+                                  Text(
+                                    snapshot.data![index].title!,
                                     overflow: TextOverflow
                                         .ellipsis, // Text가 overflow 현상이 일어나면 뒷부분을 ...으로 생략한다
                                     maxLines: 1,
@@ -143,7 +141,8 @@ class HelpScreen extends StatelessWidget {
                                       color: etGrey,
                                     ),
                                   ),
-                                  Text(formatDate,
+                                  Text(
+                                    formatDate,
                                     overflow: TextOverflow
                                         .ellipsis, // Text가 overflow 현상이 일어나면 뒷부분을 ...으로 생략한다
                                     maxLines: 1,
@@ -160,8 +159,7 @@ class HelpScreen extends StatelessWidget {
                           );
                         },
                       );
-                    }
-                ),
+                    }),
               ),
             ),
           ],
@@ -169,5 +167,4 @@ class HelpScreen extends StatelessWidget {
       ),
     );
   }
-
 }
