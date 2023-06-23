@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutting/screen/event/controller/event_controller.dart';
 import 'package:flutting/screen/event/event_detail_screen.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../constant/colors.dart';
 import '../../constant/fonts.dart';
 import '../../constant/named_widget.dart';
 import 'event_upload_screen.dart';
+import 'model/event_model.dart';
 
 class EventScreen extends StatelessWidget {
-  const EventScreen({Key? key}) : super(key: key);
+  EventScreen({Key? key}) : super(key: key);
+
+  final EventController _eventController = Get.put(EventController());
 
   @override
   Widget build(BuildContext context) {
@@ -78,65 +83,98 @@ class EventScreen extends StatelessWidget {
                 padding: EdgeInsets.symmetric(
                   horizontal: 20.w,
                 ),
-                child: ListView.separated(
-                  itemCount: 10,
-                  separatorBuilder: (context, index) => divider,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: index == 0
-                          ? EdgeInsets.only(top: 35.5.h, bottom: 10.h)
-                          : EdgeInsets.symmetric(vertical: 10.h),
-                      child: GestureDetector(
-                        behavior: HitTestBehavior.translucent,
-                        onTap: () {
-                          Get.to(() => const EventDetailScreen());
+                child: StreamBuilder<List<EventModel>>(
+                  stream: _eventController.eventDataGet(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                      return ListView.separated(
+                        itemCount: _eventController.eventDataCount(),
+                        separatorBuilder: (context, index) => divider,
+                        itemBuilder: (context, index) {
+                          final formatDate =
+                              DateFormat('yyyy년 M월 d일 a h시 mm분', 'ko_KR')
+                                  .format(_eventController
+                                      .eventList[index].dateTime!
+                                      .toDate());
+                          return Padding(
+                            padding: index == 0
+                                ? EdgeInsets.only(top: 35.5.h, bottom: 10.h)
+                                : EdgeInsets.symmetric(vertical: 10.h),
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () {
+                                Get.to(() => const EventDetailScreen(),
+                                    arguments: [
+                                      _eventController.eventList[index].title,
+                                      _eventController.eventList[index].content,
+                                      _eventController
+                                          .eventList[index].nickName,
+                                      _eventController.eventList[index].dept,
+                                      _eventController.eventList[index].image,
+                                      formatDate,
+                                    ]);
+                              },
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    _eventController.eventList[index].title!,
+                                    overflow: TextOverflow
+                                        .ellipsis, // Text가 overflow 현상이 일어나면 뒷부분을 ...으로 생략한다
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: 21.sp,
+                                      fontWeight: medium,
+                                      color: etBlack,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  Text(
+                                    '${_eventController.eventList[index].dept} · ${_eventController.eventList[index].nickName}',
+                                    overflow: TextOverflow
+                                        .ellipsis, // Text가 overflow 현상이 일어나면 뒷부분을 ...으로 생략한다
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: 14.sp,
+                                      fontWeight: medium,
+                                      color: etGrey,
+                                    ),
+                                  ),
+                                  Text(
+                                    formatDate,
+                                    overflow: TextOverflow
+                                        .ellipsis, // Text가 overflow 현상이 일어나면 뒷부분을 ...으로 생략한다
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: 14.sp,
+                                      fontWeight: medium,
+                                      color: etGrey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
                         },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vehicula velit quis purus fringilla, at cursus nisi lacinia.',
-                              overflow: TextOverflow
-                                  .ellipsis, // Text가 overflow 현상이 일어나면 뒷부분을 ...으로 생략한다
-                              maxLines: 1,
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: 21.sp,
-                                fontWeight: medium,
-                                color: etBlack,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            Text(
-                              '캄퓨터정보학부 · 김태은',
-                              overflow: TextOverflow
-                                  .ellipsis, // Text가 overflow 현상이 일어나면 뒷부분을 ...으로 생략한다
-                              maxLines: 1,
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: 14.sp,
-                                fontWeight: medium,
-                                color: etGrey,
-                              ),
-                            ),
-                            Text(
-                              '2023.03.22',
-                              overflow: TextOverflow
-                                  .ellipsis, // Text가 overflow 현상이 일어나면 뒷부분을 ...으로 생략한다
-                              maxLines: 1,
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: 14.sp,
-                                fontWeight: medium,
-                                color: etGrey,
-                              ),
-                            ),
-                          ],
+                      );
+                    } else {
+                      return Center(
+                        child: Text(
+                          '등록된 게시글이 없어요.',
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: 14.sp,
+                            fontWeight: bold,
+                            color: etLightGrey,
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    }
                   },
                 ),
               ),

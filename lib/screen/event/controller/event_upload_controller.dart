@@ -37,17 +37,20 @@ class EventUploadController extends GetxController {
     print('upload start');
     isLoading = true.obs;
     try {
-      final UploadTask uploadTask = FirebaseStorage.instance
-          .ref()
-          .child(
-              'event/${id}_201930306/${id}_201930306.${imagePath.value.split('.').last}')
-          .putData(File(imagePath.value).readAsBytesSync());
-      // 만약 사진 업로드 성공 시
-      final TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
+      var url = "";
+      if (imagePath.value != "") {
+        final UploadTask uploadTask = FirebaseStorage.instance
+            .ref()
+            .child(
+                'event/${id}_201930306/${id}_201930306.${imagePath.value.split('.').last}')
+            .putData(File(imagePath.value).readAsBytesSync());
+        // 만약 사진 업로드 성공 시
+        final TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
 
-      // 사진의 다운로드 가능한 url을 불러온 후
-      final url = await taskSnapshot.ref.getDownloadURL();
-      print(url);
+        // 사진의 다운로드 가능한 url을 불러온 후
+        url = await taskSnapshot.ref.getDownloadURL();
+        print(url);
+      }
 
       final data = {
         'uid': 'testUID',
