@@ -49,7 +49,7 @@ class HelpUploadController extends GetxController {
             FirebaseStorage.instance.ref().child('help/${dateTime}_uid');
         UploadTask uploadTask = storageRef.putData(fileBytes!);
         TaskSnapshot taskSnapshot = await uploadTask;
-        String downloadURL = await taskSnapshot.ref.getDownloadURL();
+        downloadURL = await taskSnapshot.ref.getDownloadURL();
         print(downloadURL);
       }
 
