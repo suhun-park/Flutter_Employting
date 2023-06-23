@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 class HomeUploadController extends GetxController {
   RxBool isLoading = false.obs;
   RxString titleText = "".obs;
-  var endDate = DateTime(2099, 12, 31).obs;
+  Rx<DateTime> endDate = DateTime(2099, 12, 31).obs;
   RxString companyText = "".obs;
-  RxString descText = "".obs;
+  RxString contentText = "".obs;
 
   void changeTitle(value) {
     titleText.value = value;
@@ -20,8 +20,8 @@ class HomeUploadController extends GetxController {
     companyText.value = value;
   }
 
-  void changeDesc(value) {
-    descText.value = value;
+  void changeContent(value) {
+    contentText.value = value;
   }
 
   void uploadPost(String id, DateTime dateTime) async {
@@ -34,13 +34,17 @@ class HomeUploadController extends GetxController {
         'number': '201930306',
         'nickName': 'nickname_test',
         'title': titleText.value,
-        'desc': descText.value,
+        'content': contentText.value,
+        'company': companyText.value,
         'dateTime': dateTime,
         'endDate': endDate.value,
+        'dept': '컴퓨터정보학부',
       });
       isLoading = false.obs;
       titleText = "".obs;
-      descText = "".obs;
+      contentText = "".obs;
+      companyText = "".obs;
+      endDate = DateTime(2099, 12, 31).obs;
 
       Get.back();
     } catch (e) {

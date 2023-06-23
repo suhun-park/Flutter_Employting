@@ -9,7 +9,7 @@ class EventUploadController extends GetxController {
   RxBool isLoading = false.obs;
   RxString imagePath = "".obs;
   RxString titleText = "".obs;
-  RxString descText = "".obs;
+  RxString contentText = "".obs;
 
   void selectImage() async {
     await ImagePicker().pickImage(source: ImageSource.gallery).then((value) {
@@ -29,8 +29,8 @@ class EventUploadController extends GetxController {
     titleText.value = value;
   }
 
-  void changeDesc(value) {
-    descText.value = value;
+  void changeContent(value) {
+    contentText.value = value;
   }
 
   void uploadPost(String id, DateTime dateTime) async {
@@ -49,20 +49,28 @@ class EventUploadController extends GetxController {
       final url = await taskSnapshot.ref.getDownloadURL();
       print(url);
 
-      await FirebaseFirestore.instance.collection('event').doc(id).set({
+      final data = {
         'uid': 'testUID',
         'id': id,
         'number': '201930306',
         'nickName': 'nickname_test',
         'title': titleText.value,
-        'desc': descText.value,
-        'image': url,
+        'content': contentText.value,
         'dateTime': dateTime,
-      });
+        'dept': '컴퓨터정보학부',
+      };
+
+      if (imagePath.value != "") {
+        data['image'] = url;
+      }
+
+      await FirebaseFirestore.instance.collection('event').doc(id).set(data);
+
       isLoading = false.obs;
       imagePath = "".obs;
       titleText = "".obs;
-      descText = "".obs;
+      contentText = "".obs;
+
       Get.back();
     } catch (e) {
       print(e.toString());
