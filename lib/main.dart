@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
       designSize: const Size(393, 852),
       builder: (context, child) {
         return const GetMaterialApp(
+            debugShowCheckedModeBanner: false,
           home: SplashScreen(),
         );
       },
