@@ -36,12 +36,12 @@ class RootTab extends GetView<RootTabController> {
   Widget homeIndex() {
     return IndexedStack(
       index: controller.pageIndex.value,
-      children: const [
-        HomeScreen(),
-        WebViewScreen(),
-        HelpScreen(),
+      children: [
+        const HomeScreen(),
+        const WebViewScreen(),
+        const HelpScreen(),
         EventScreen(),
-        MyUserScreen(),
+        const MyUserScreen(),
       ],
     );
   }
