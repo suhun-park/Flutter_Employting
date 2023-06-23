@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutting/constant/colors.dart';
 import 'package:flutting/constant/fonts.dart';
 import 'package:flutting/constant/named_widget.dart';
+import 'package:flutting/screen/pdf/pdf_screen.dart';
 import 'package:get/get.dart';
 
 class HelpDetailScreen extends StatelessWidget {
@@ -113,36 +114,41 @@ class HelpDetailScreen extends StatelessWidget {
                             ),
                       pdf == ""
                           ? const SizedBox()
-                          : Container(
-                              decoration: BoxDecoration(
-                                color: etLightGrey,
-                                borderRadius: BorderRadius.circular(5.r),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 8.w,
-                                  vertical: 8.w,
+                          : GestureDetector(
+                              onTap: () {
+                                Get.to(() => PDFScreen(pdfPath: pdf));
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: etLightGrey,
+                                  borderRadius: BorderRadius.circular(5.r),
                                 ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/icon/pdf_icon.png',
-                                      height: 18.h,
-                                    ),
-                                    SizedBox(
-                                      width: 7.w,
-                                    ),
-                                    Text(
-                                      '자기소개서 PDF 확인',
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: 13.sp,
-                                        fontWeight: medium,
-                                        color: etWhite,
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 8.w,
+                                    vertical: 8.w,
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/icon/pdf_icon.png',
+                                        height: 18.h,
                                       ),
-                                    ),
-                                  ],
+                                      SizedBox(
+                                        width: 7.w,
+                                      ),
+                                      Text(
+                                        '자기소개서 PDF 확인',
+                                        style: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: 13.sp,
+                                          fontWeight: medium,
+                                          color: etWhite,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

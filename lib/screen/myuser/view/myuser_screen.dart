@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +8,7 @@ import 'package:flutting/constant/colors.dart';
 import 'package:flutting/constant/fonts.dart';
 import 'package:flutting/constant/named_widget.dart';
 import 'package:flutting/main.dart';
+import 'package:flutting/root_tab/view/root_tab_view.dart';
 import 'package:flutting/screen/myuser/controller/myuser_controller.dart';
 import 'package:flutting/screen/myuser/layout/text_container_layout.dart';
 import 'package:get/get.dart';
@@ -468,7 +470,11 @@ class MyUserScreen extends GetView<MyUserController> {
                   divider,
                   SizedBox(height: 20.h),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () async {
+                      await const FlutterSecureStorage().deleteAll();
+                      await FirebaseAuth.instance.signOut();
+                      Get.to(() => const RootTab());
+                    },
                     child: Text(
                       "로그아웃",
                       style: TextStyle(
