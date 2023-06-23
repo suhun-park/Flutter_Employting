@@ -15,7 +15,7 @@ class HomeDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final String title = Get.arguments[0];
     final String content = Get.arguments[1];
-    final String nickName =Get.arguments[2];
+    final String nickName = Get.arguments[2];
     final String dept = Get.arguments[3];
     final String uid = Get.arguments[4];
     final String formatDate = Get.arguments[5];
@@ -50,7 +50,7 @@ class HomeDetailScreen extends StatelessWidget {
                           child: Padding(
                             padding: EdgeInsets.zero,
                             child: Icon(
-                              Icons.arrow_back_ios_new,
+                              Icons.arrow_back_ios,
                               color: etDarkGrey,
                               size: 22.0.h,
                             ),
@@ -61,7 +61,8 @@ class HomeDetailScreen extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 70,
-                    child: Text(title,
+                    child: Text(
+                      title,
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -109,7 +110,8 @@ class HomeDetailScreen extends StatelessWidget {
                         height: 20.h,
                       ),
                       Text(
-                        content, style: TextStyle(
+                        content,
+                        style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: 16.sp,
                           fontWeight: medium,
@@ -132,7 +134,7 @@ class HomeDetailScreen extends StatelessWidget {
                         height: 20.h,
                       ),
                       Text(
-                        dept,
+                        '$dept · $nickName',
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: 18.sp,
