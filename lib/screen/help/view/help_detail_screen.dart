@@ -8,10 +8,17 @@ import 'package:flutting/constant/named_widget.dart';
 import 'package:get/get.dart';
 
 class HelpDetailScreen extends StatelessWidget {
+
   const HelpDetailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final String title = Get.arguments[0];
+    final String content = Get.arguments[1];
+    final String nickName =Get.arguments[2];
+    final String dept = Get.arguments[3];
+    final String pdf = Get.arguments[4];
+    final String formatDate = Get.arguments[5];
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -53,8 +60,7 @@ class HelpDetailScreen extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 70,
-                    child: Text(
-                      '제 자기소개서가 올바른지 모르겠어요.',
+                    child: Text(title,
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -89,8 +95,7 @@ class HelpDetailScreen extends StatelessWidget {
                       SizedBox(
                         height: 32.5.h,
                       ),
-                      Text(
-                        '제 자기소개서가 올바른지 모르겠어요.',
+                      Text(title,
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: 21.sp,
@@ -137,8 +142,7 @@ class HelpDetailScreen extends StatelessWidget {
                       SizedBox(
                         height: 15.h,
                       ),
-                      Text(
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vehicula velit quis purus fringilla, at cursus nisi lacinia. Phasellus quam sem, elementum et felis et, tempus molestie velit. Mauris eget volutpat libero, et luctus dui. Maecenas dapibus hendrerit mauris, sit amet consectetur sem iaculis eu. Nunc commodo iaculis metus sit amet placerat. Praesent nec volutpat sem, a mattis ligula. Praesent pharetra magna ac ex tempus mattis. Nulla quis leo eleifend, ornare dolor quis, interdum mi. In laoreet tortor lacus, vitae placerat felis maximus vel. Nunc sodales eget nunc ac suscipit. Nunc vestibulum dolor risus, vel mattis sem volutpat nec. Sed ut est quis dui fermentum mollis. Morbi in lorem nec quam dapibus consectetur et at ex.\nCras vestibulum elit et libero posuere, sit amet posuere enim fringilla. Sed sodales consectetur purus, sed venenatis dolor vehicula eget. Nam vitae pellentesque sapien. Morbi commodo pulvinar dolor et congue. Donec at facilisis quam, quis vehicula erat. Vivamus consequat scelerisque fermentum. In convallis congue suscipit. Curabitur nec ex lorem. Mauris sit amet odio id ante gravida tincidunt. Curabitur id metus id metus semper viverra. Nam gravida non velit nec sollicitudin. Fusce sit amet iaculis leo. Cras laoreet nulla nunc, sed sagittis sapien molestie quis. Aliquam vestibulum aliquet lorem in ultrices. Donec finibus gravida arcu eget iaculis. Suspendisse tristique arcu non feugiat auctor.',
+                      Text(content,
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: 16.sp,
@@ -150,7 +154,7 @@ class HelpDetailScreen extends StatelessWidget {
                         height: 20.h,
                       ),
                       Text(
-                        '컴퓨터정보학부',
+                        dept,
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: 18.sp,
@@ -162,7 +166,7 @@ class HelpDetailScreen extends StatelessWidget {
                         height: 5.h,
                       ),
                       Text(
-                        '2022년 03월 15일 오후 5시 00분',
+                        formatDate,
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: 13.sp,

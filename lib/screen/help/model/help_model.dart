@@ -6,6 +6,8 @@ class HelpModel {
   String? pdf;
   String? title;
   Timestamp? dateTime;
+  String? nickName;
+  String? dept;
 
 
   HelpModel({
@@ -14,6 +16,8 @@ class HelpModel {
     required this.pdf,
     required this.title,
     required this.dateTime,
+    required this.nickName,
+    required this.dept,
   });
 
   HelpModel.fromJson(Map<String,dynamic>json){
@@ -22,6 +26,8 @@ class HelpModel {
     pdf = json['pdf'];
     title = json['title'];
     dateTime = json['dateTime'];
+    nickName = json['nickName'];
+    dept = json['dept'];
   }
   Map<String,dynamic>toJson(){
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -30,6 +36,8 @@ class HelpModel {
     pdf = data['pdf'];
     title = data['title'];
     dateTime = data['dateTime'];
+    nickName = data['nickName'];
+    dept = data['dept'];
     return data;
   }
 }
