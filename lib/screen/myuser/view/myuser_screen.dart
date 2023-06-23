@@ -15,7 +15,7 @@ class MyUserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final MyUserController  _myUserController = Get.put(MyUserController());
-    return Obx (() =>Scaffold(
+    return Scaffold(
         body: SafeArea(
       child: Column(
         children: [
@@ -70,7 +70,7 @@ class MyUserScreen extends StatelessWidget {
                   height: 30.h,
                 ),
                 SizedBox(
-                  child: Text('dd',
+                  child: Text("dd",
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontFamily: 'Pretendard',
@@ -264,6 +264,6 @@ class MyUserScreen extends StatelessWidget {
           )
         ],
       ),
-    )));
+    ));
   }
 }
