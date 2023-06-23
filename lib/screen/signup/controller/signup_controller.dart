@@ -10,11 +10,7 @@ class SignupController extends GetxController {
   RxString deptText = "".obs;
 
   void changeEmail(value) {
-    if (emailText.value != "") {
-      emailText.value = '$value@email.daelim.ac.kr';
-    } else {
-      emailText.value = '';
-    }
+    emailText.value = value;
   }
 
   void changePassword(value) {

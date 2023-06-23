@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutting/screen/signin/signin_screen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutting/constant/colors.dart';
+import 'package:flutting/constant/fonts.dart';
+import 'package:flutting/constant/named_widget.dart';
 import 'package:flutting/screen/signup/signup_screen.dart';
-import 'package:get/route_manager.dart';
+import 'package:get/get.dart';
 
-import '../root_tab/view/root_tab_view.dart';
+import 'signin/signin_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -11,30 +14,90 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("스플래시 이미지"),
-      ),
-      body: Column(
-        children: [
-          TextButton(
-            onPressed: () {
-              Get.to(() => const RootTab());
-            },
-            child: const Text("넘기기"),
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: Column(
+            children: [
+              const Expanded(
+                flex: 15,
+                child: SizedBox(),
+              ),
+              const Expanded(
+                flex: 70,
+                child: Center(),
+              ),
+              Expanded(
+                flex: 15,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Row(
+                    children: [
+                      Flexible(
+                        child: GestureDetector(
+                          onTap: () {
+                            Get.to(() => SignUpScreen());
+                          },
+                          child: Container(
+                            height: 42.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                5.r,
+                              ),
+                              color: etBlue,
+                            ),
+                            alignment: Alignment.center,
+                            child: Center(
+                              child: Text(
+                                '회원가입',
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: 18.sp,
+                                  fontWeight: bold,
+                                  color: etWhite,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 12.w),
+                      Flexible(
+                        child: GestureDetector(
+                          onTap: () {
+                            Get.to(() => SigninScreen());
+                          },
+                          child: Container(
+                            height: 38.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                5.r,
+                              ),
+                              color: etLightGrey,
+                            ),
+                            alignment: Alignment.center,
+                            child: Center(
+                              child: Text(
+                                '로그인',
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: 18.sp,
+                                  fontWeight: bold,
+                                  color: etWhite,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              bottomPadding,
+            ],
           ),
-          TextButton(
-            onPressed: () {
-              Get.to(() => SignUpScreen());
-            },
-            child: const Text('회원가입'),
-          ),
-          TextButton(
-            onPressed: () {
-              Get.to(() => const SigninScreen());
-            },
-            child: const Text('로그인'),
-          ),
-        ],
+        ),
       ),
     );
   }

@@ -1,11 +1,19 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutting/constant/colors.dart';
 import 'package:flutting/constant/fonts.dart';
+import 'package:flutting/constant/named_widget.dart';
+import 'package:flutting/root_tab/view/root_tab_view.dart';
+import 'package:flutting/screen/signin/controller/signin_controller.dart';
 import 'package:get/get.dart';
 
 class SigninScreen extends StatelessWidget {
-  const SigninScreen({super.key});
+  SigninScreen({super.key});
+
+  final SigninController controller = Get.put(SigninController());
 
   TextStyle inputTextDeco() => TextStyle(
         fontFamily: 'Pretendard',
@@ -44,6 +52,62 @@ class SigninScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void firebaseLogin() async {
+      controller.isLoading.value = true;
+      try {
+        await FirebaseAuth.instance
+            .signInWithEmailAndPassword(
+                email: '${controller.emailText.value}@email.daelim.ac.kr',
+                password: controller.passwordText.value)
+            .then((value) {
+          if (value.user!.emailVerified == true) {
+            controller.isLoading.value = false;
+            Get.to(() => const RootTab());
+          } else {
+            controller.isLoading.value = false;
+            showCupertinoDialog(
+              context: context,
+              builder: (context) {
+                return CupertinoAlertDialog(
+                  title: const Text('오류'),
+                  content: const Text(
+                      '인증받지 않은 계정입니다.\n메일함을 확인하여 인증 링크를 눌러주세요.\n(스팸메일함도 확인해주세요.)'),
+                  actions: [
+                    CupertinoDialogAction(
+                      child: const Text('확인'),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
+                );
+              },
+            );
+            return;
+          }
+        });
+      } on FirebaseAuthException catch (e) {
+        controller.isLoading.value = false;
+        showCupertinoDialog(
+          context: context,
+          builder: (context) {
+            return CupertinoAlertDialog(
+              title: const Text('오류'),
+              content: Text('로그인에 실패하였습니다..\n${e.code}'),
+              actions: [
+                CupertinoDialogAction(
+                  child: const Text('확인'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                )
+              ],
+            );
+          },
+        );
+      }
+    }
+
     return Scaffold(
       body: SafeArea(
         top: false,
@@ -75,7 +139,7 @@ class SigninScreen extends StatelessWidget {
                       height: 52.h,
                     ),
                     Text(
-                      '회원가입',
+                      '로그인',
                       style: TextStyle(
                         fontFamily: 'Pretendard',
                         fontSize: 32.sp,
@@ -86,13 +150,39 @@ class SigninScreen extends StatelessWidget {
                     SizedBox(
                       height: 60.h,
                     ),
-                    SizedBox(
+                    Container(
                       height: 45.h,
-                      child: TextField(
-                        style: inputTextDeco(),
-                        decoration: inputDeco('이메일'),
-                        cursorColor: etBlack,
-                        onChanged: (value) {},
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 2.w, color: etDarkGrey),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8.w,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                style: inputTextDeco(),
+                                cursorColor: etBlack,
+                                decoration: null,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp('[a-zA-Z0-9]')),
+                                ],
+                                onChanged: (value) {
+                                  controller.changeEmail(value);
+                                },
+                              ),
+                            ),
+                            Text(
+                              '@email.daelim.ac.kr',
+                              style: inputTextDeco(),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -101,36 +191,59 @@ class SigninScreen extends StatelessWidget {
                     SizedBox(
                       height: 45.h,
                       child: TextField(
+                        obscureText: true, // 비밀번호 가리기
                         style: inputTextDeco(),
-                        decoration: inputDeco('비밀번호'),
+                        decoration: inputDeco('비밀번호(6자 이상)'),
                         cursorColor: etBlack,
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                          controller.changePassword(value);
+                        },
                       ),
                     ),
                     const Expanded(
                       child: SizedBox(),
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: etBlue,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(5.r),
-                        ),
-                      ),
-                      width: double.infinity,
-                      height: MediaQuery.of(context).size.height * 0.04929,
-                      child: Center(
-                        child: Text(
-                          '로그인하기',
-                          style: TextStyle(
-                            fontFamily: 'Pretendard',
-                            fontSize: 18.sp,
-                            fontWeight: bold,
-                            color: etWhite,
+                    SizedBox(
+                      height: 25.h,
+                    ),
+                    Obx(
+                      () => GestureDetector(
+                        onTap: controller.isLoading.value == true
+                            ? null
+                            : () {
+                                if (controller.emailText.value != "" &&
+                                    controller.passwordText.value != "") {
+                                  firebaseLogin();
+                                }
+                              },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: controller.isLoading.value == true ||
+                                    !(controller.emailText.value != "" &&
+                                        controller.passwordText.value != "")
+                                ? etLightGrey
+                                : etBlue,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(5.r),
+                            ),
+                          ),
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height * 0.04929,
+                          child: Center(
+                            child: Text(
+                              '로그인하기',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: 18.sp,
+                                fontWeight: bold,
+                                color: etWhite,
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
+                    bottomPadding,
                   ],
                 ),
               ),
