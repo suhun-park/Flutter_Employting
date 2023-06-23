@@ -256,6 +256,46 @@ class HomeUploadScreen extends StatelessWidget {
                         },
                       ),
                     ),
+                    InkWell(
+                      onTap: () => controller.homeUploadPDF(),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: etLightGrey,
+                          borderRadius: BorderRadius.circular(5.r),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 8.w,
+                            vertical: 8.w,
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Image.asset(
+                                'assets/images/icon/pdf_icon.png',
+                                height: 18.h,
+                              ),
+                              SizedBox(
+                                width: 7.w,
+                              ),
+                              Text(
+                                'PDF 파일 업로드',
+                                style: TextStyle(
+                                  fontFamily: 'Pretendard',
+                                  fontSize: 13.sp,
+                                  fontWeight: medium,
+                                  color: etWhite,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    Obx(() => Text(controller.homePickText.value)),
                   ],
                 ),
               ),

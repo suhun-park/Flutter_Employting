@@ -33,7 +33,7 @@ class HelpUploadController extends GetxController {
     if (result != null) {
       file = File(result.files.single.path!);
       helpPickText.value = result.files.single.name;
-      fileBytes = result.files.first.bytes;
+      fileBytes = await file?.readAsBytes();
     } else {
       Get.back();
     }
@@ -50,6 +50,7 @@ class HelpUploadController extends GetxController {
         UploadTask uploadTask = storageRef.putData(fileBytes!);
         TaskSnapshot taskSnapshot = await uploadTask;
         String downloadURL = await taskSnapshot.ref.getDownloadURL();
+        print(downloadURL);
       }
 
       await FirebaseFirestore.instance.collection('help').doc(id).set({
