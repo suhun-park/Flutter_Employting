@@ -4,27 +4,20 @@ import 'package:flutting/constant/colors.dart';
 import 'package:flutting/constant/fonts.dart';
 import 'package:flutting/constant/named_widget.dart';
 import 'package:flutting/screen/help/controller/help_controller.dart';
+import 'package:flutting/screen/help/model/help_model.dart';
 import 'package:flutting/screen/help/view/help_detail_screen.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import 'help_upload_screen.dart';
 
-class HelpScreen extends StatefulWidget {
+class HelpScreen extends StatelessWidget {
+
   const HelpScreen({Key? key}) : super(key: key);
 
   @override
-  State<HelpScreen> createState() => _HelpScreenState();
 
-}
 
-class _HelpScreenState extends State<HelpScreen> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-  }
-  @override
   Widget build(BuildContext context) {
     final HelpController _helpController = Get.put(HelpController());
     return Scaffold(
@@ -92,66 +85,80 @@ class _HelpScreenState extends State<HelpScreen> {
                 padding: EdgeInsets.symmetric(
                   horizontal: 20.w,
                 ),
-                child: ListView.separated(
-                  itemCount: _helpController.helpDataCount.value,
-                  separatorBuilder: (context, index) => divider,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: index == 0
-                          ? EdgeInsets.only(top: 35.5.h, bottom: 10.h)
-                          : EdgeInsets.symmetric(vertical: 10.h),
-                      child: GestureDetector(
-                        behavior: HitTestBehavior.translucent,
-                        onTap: () {
-                          Get.to(() => const HelpDetailScreen());
+                child: FutureBuilder<List<HelpModel>>(
+                    future: _helpController.helpDataGet(),
+                    builder: (context,snapshot) {
+                      print(_helpController.helpDataCount);
+                      return ListView.separated(
+                        itemCount: _helpController.helpDataCount(),
+                        separatorBuilder: (context, index) => divider,
+                        itemBuilder: (context, index) {
+                          final formatDate = DateFormat(
+                              'yyyy년 M월 d일 a h시 mm분', 'ko_KR')
+                              .format(_helpController.helpList[index].dateTime!.toDate());
+                          return Padding(
+                            padding: index == 0
+                                ? EdgeInsets.only(top: 35.5.h, bottom: 10.h)
+                                : EdgeInsets.symmetric(vertical: 10.h),
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () {
+                                Get.to(() => const HelpDetailScreen(),arguments: [
+                                  _helpController.helpList[index].title,
+                                  _helpController.helpList[index].content,
+                                  _helpController.helpList[index].nickName,
+                                  _helpController.helpList[index].dept,
+                                  _helpController.helpList[index].pdf,
+                                  formatDate,
+                                ]);
+                              },
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(_helpController.helpList[index].title!,
+                                    overflow: TextOverflow
+                                        .ellipsis, // Text가 overflow 현상이 일어나면 뒷부분을 ...으로 생략한다
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: 21.sp,
+                                      fontWeight: medium,
+                                      color: etBlack,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  Text(
+                                    '${_helpController.helpList[index].dept} · ${_helpController.helpList[index].nickName}',
+                                    overflow: TextOverflow
+                                        .ellipsis, // Text가 overflow 현상이 일어나면 뒷부분을 ...으로 생략한다
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: 14.sp,
+                                      fontWeight: medium,
+                                      color: etGrey,
+                                    ),
+                                  ),
+                                  Text(formatDate,
+                                    overflow: TextOverflow
+                                        .ellipsis, // Text가 overflow 현상이 일어나면 뒷부분을 ...으로 생략한다
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: 14.sp,
+                                      fontWeight: medium,
+                                      color: etGrey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
                         },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vehicula velit quis purus fringilla, at cursus nisi lacinia.',
-                              overflow: TextOverflow
-                                  .ellipsis, // Text가 overflow 현상이 일어나면 뒷부분을 ...으로 생략한다
-                              maxLines: 1,
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: 21.sp,
-                                fontWeight: medium,
-                                color: etBlack,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            Text(
-                              '캄퓨터정보학부 · 김태은',
-                              overflow: TextOverflow
-                                  .ellipsis, // Text가 overflow 현상이 일어나면 뒷부분을 ...으로 생략한다
-                              maxLines: 1,
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: 14.sp,
-                                fontWeight: medium,
-                                color: etGrey,
-                              ),
-                            ),
-                            Text(
-                              '2023.03.22',
-                              overflow: TextOverflow
-                                  .ellipsis, // Text가 overflow 현상이 일어나면 뒷부분을 ...으로 생략한다
-                              maxLines: 1,
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: 14.sp,
-                                fontWeight: medium,
-                                color: etGrey,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
+                      );
+                    }
                 ),
               ),
             ),
@@ -160,4 +167,5 @@ class _HelpScreenState extends State<HelpScreen> {
       ),
     );
   }
+
 }
