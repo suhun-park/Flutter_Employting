@@ -27,7 +27,7 @@ class HelpController extends GetxController{
 
     return helpList;
   }
-  Stream<List<HelpModel>> createStream() {
+  Stream<List<HelpModel>> helpStreamDataGet() {
     return FirebaseFirestore.instance.collection('help').snapshots().map((snapshot) {
       return snapshot.docs.map((doc) => HelpModel.fromJson(doc.data())).toList();
     });

@@ -88,7 +88,7 @@ class HelpScreen extends StatelessWidget {
                 ),
                 child: StreamBuilder<List<HelpModel>>(
                   initialData: _helpController.helpList,
-                    stream: _helpController.createStream(),
+                    stream: _helpController.helpStreamDataGet(),
                     builder: (context,snapshot) {
                       print(_helpController.helpDataCount);
                       return ListView.separated(
