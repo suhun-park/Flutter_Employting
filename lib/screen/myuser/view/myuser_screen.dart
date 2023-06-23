@@ -70,7 +70,7 @@ class MyUserScreen extends StatelessWidget {
                   height: 30.h,
                 ),
                 SizedBox(
-                  child: Text(_myUserController.myUserList[0].nickName!,
+                  child: Text('dd',
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontFamily: 'Pretendard',

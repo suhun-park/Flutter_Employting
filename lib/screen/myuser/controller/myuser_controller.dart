@@ -10,7 +10,7 @@ class MyUserController extends GetxController{
   RxList<MyUserModel> myUserList = <MyUserModel>[].obs;
 
   //데이터 불러오기
-  Future<List<MyUserModel>> UserDataGet() async{
+  Future<List<MyUserModel>> userDataGet() async{
     final FirebaseAuth auth = FirebaseAuth.instance;
     CollectionReference<Map<String, dynamic>> collectionReference =
     FirebaseFirestore.instance.collection("user");
@@ -23,6 +23,5 @@ class MyUserController extends GetxController{
       print(myUserList[0]);
     }
     return myUserList;
-
   }
 }
