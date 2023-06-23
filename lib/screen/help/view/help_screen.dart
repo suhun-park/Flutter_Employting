@@ -20,6 +20,7 @@ class HelpScreen extends StatelessWidget {
 
   Widget build(BuildContext context) {
     final HelpController _helpController = Get.put(HelpController());
+    _helpController.helpDataGet();
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         heroTag: 'helpFAB',
@@ -85,17 +86,18 @@ class HelpScreen extends StatelessWidget {
                 padding: EdgeInsets.symmetric(
                   horizontal: 20.w,
                 ),
-                child: FutureBuilder<List<HelpModel>>(
-                    future: _helpController.helpDataGet(),
+                child: StreamBuilder<List<HelpModel>>(
+                  initialData: _helpController.helpList,
+                    stream: _helpController.createStream(),
                     builder: (context,snapshot) {
                       print(_helpController.helpDataCount);
                       return ListView.separated(
-                        itemCount: _helpController.helpDataCount(),
+                        itemCount: snapshot.data!.length,
                         separatorBuilder: (context, index) => divider,
                         itemBuilder: (context, index) {
                           final formatDate = DateFormat(
                               'yyyy년 M월 d일 a h시 mm분', 'ko_KR')
-                              .format(_helpController.helpList[index].dateTime!.toDate());
+                              .format(snapshot.data![index].dateTime!.toDate());
                           return Padding(
                             padding: index == 0
                                 ? EdgeInsets.only(top: 35.5.h, bottom: 10.h)
@@ -104,18 +106,18 @@ class HelpScreen extends StatelessWidget {
                               behavior: HitTestBehavior.translucent,
                               onTap: () {
                                 Get.to(() => const HelpDetailScreen(),arguments: [
-                                  _helpController.helpList[index].title,
-                                  _helpController.helpList[index].content,
-                                  _helpController.helpList[index].nickName,
-                                  _helpController.helpList[index].dept,
-                                  _helpController.helpList[index].pdf,
+                                  snapshot.data![index].title,
+                                  snapshot.data![index].content,
+                                  snapshot.data![index].nickName,
+                                  snapshot.data![index].dept,
+                                  snapshot.data![index].pdf,
                                   formatDate,
                                 ]);
                               },
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(_helpController.helpList[index].title!,
+                                  Text(snapshot.data![index].title!,
                                     overflow: TextOverflow
                                         .ellipsis, // Text가 overflow 현상이 일어나면 뒷부분을 ...으로 생략한다
                                     maxLines: 1,
@@ -130,7 +132,7 @@ class HelpScreen extends StatelessWidget {
                                     height: 10.h,
                                   ),
                                   Text(
-                                    '${_helpController.helpList[index].dept} · ${_helpController.helpList[index].nickName}',
+                                    '${snapshot.data![index].dept} · ${snapshot.data![index].nickName}',
                                     overflow: TextOverflow
                                         .ellipsis, // Text가 overflow 현상이 일어나면 뒷부분을 ...으로 생략한다
                                     maxLines: 1,
