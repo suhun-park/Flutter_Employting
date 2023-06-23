@@ -34,7 +34,7 @@ class HomeUploadController extends GetxController {
         'uid': 'testUID',
         'id': id,
         'number': '201930306',
-        'nickName': 'nickname_test',
+        'nickName': '대림대학교 취업팀',
         'title': titleText.value,
         'content': contentText.value,
         'company': companyText.value,

@@ -13,46 +13,46 @@ class HelpUploadScreen extends StatelessWidget {
   const HelpUploadScreen({super.key});
 
   TextStyle inputTextDeco() => TextStyle(
-        fontFamily: 'Pretendard',
-        fontSize: 18.sp,
-        fontWeight: medium,
-        color: etBlack,
-      );
+    fontFamily: 'Pretendard',
+    fontSize: 18.sp,
+    fontWeight: medium,
+    color: etBlack,
+  );
 
   InputDecoration inputDeco(String? hintText) => InputDecoration(
-        hintText: hintText,
-        hintStyle: TextStyle(
-          fontFamily: 'Pretendard',
-          fontSize: 18.sp,
-          fontWeight: medium,
-          color: etBlack,
-        ),
-        contentPadding: EdgeInsets.symmetric(
-          vertical: 10.h,
-          horizontal: 10.w,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.zero,
-          borderSide: BorderSide(
-            width: 1.w,
-            color: etLightGrey,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.zero,
-          borderSide: BorderSide(
-            width: 1.w,
-            color: etLightGrey,
-          ),
-        ),
-        disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.zero,
-          borderSide: BorderSide(
-            width: 1.w,
-            color: etDarkGrey,
-          ),
-        ),
-      );
+    hintText: hintText,
+    hintStyle: TextStyle(
+      fontFamily: 'Pretendard',
+      fontSize: 18.sp,
+      fontWeight: medium,
+      color: etBlack,
+    ),
+    contentPadding: EdgeInsets.symmetric(
+      vertical: 10.h,
+      horizontal: 10.w,
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.zero,
+      borderSide: BorderSide(
+        width: 1.w,
+        color: etLightGrey,
+      ),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.zero,
+      borderSide: BorderSide(
+        width: 1.w,
+        color: etLightGrey,
+      ),
+    ),
+    disabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.zero,
+      borderSide: BorderSide(
+        width: 1.w,
+        color: etDarkGrey,
+      ),
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -133,17 +133,17 @@ class HelpUploadScreen extends StatelessWidget {
                             fontSize: 18.sp,
                             fontWeight: medium,
                             color: _helpUploadController
-                                        .helpTitleText.isNotEmpty &&
-                                    _helpUploadController
-                                        .helpContentText.isNotEmpty &&
-                                    _helpUploadController.helpIsLoading == false
+                                .helpTitleText.isNotEmpty &&
+                                _helpUploadController
+                                    .helpContentText.isNotEmpty &&
+                                _helpUploadController.helpIsLoading == false
                                 ? etBlue
                                 : etLightGrey,
                           ),
                         ),
+                        ),
                       ),
                     ),
-                  ),
                   ),
                 ],
               ),
