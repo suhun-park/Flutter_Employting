@@ -5,7 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutting/constant/colors.dart';
 import 'package:flutting/constant/fonts.dart';
 import 'package:flutting/constant/named_widget.dart';
+import 'package:flutting/screen/help/controller/help_upload_controller.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class HelpUploadScreen extends StatelessWidget {
   const HelpUploadScreen({super.key});
@@ -54,6 +56,7 @@ class HelpUploadScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final HelpUploadController _helpUploadController = Get.put(HelpUploadController());
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -111,16 +114,36 @@ class HelpUploadScreen extends StatelessWidget {
                     flex: 15,
                     child: Align(
                       alignment: Alignment.centerRight,
-                      child: Text(
-                        "완료",
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: 18.sp,
-                          fontWeight: medium,
-                          color: etBlue,
+                      child: Obx(
+                            () => GestureDetector(
+                          onTap: _helpUploadController.helpTitleText.isNotEmpty &&
+                              _helpUploadController.helpContentText.isNotEmpty &&
+                              _helpUploadController.helpIsLoading == false
+                              ? () {
+                            final now = DateTime.now();
+                            _helpUploadController.uploadPost(
+                              DateFormat('yyyyMMddHHmmss').format(now),
+                              now,
+                            );
+                          }
+                              : () {},child:Text(
+                          "완료",
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: 18.sp,
+                            fontWeight: medium,
+                            color: _helpUploadController
+                                        .helpTitleText.isNotEmpty &&
+                                    _helpUploadController
+                                        .helpContentText.isNotEmpty &&
+                                    _helpUploadController.helpIsLoading == false
+                                ? etBlue
+                                : etLightGrey,
+                          ),
                         ),
                       ),
                     ),
+                  ),
                   ),
                 ],
               ),
@@ -142,6 +165,7 @@ class HelpUploadScreen extends StatelessWidget {
                   SizedBox(
                     height: 40.h,
                     child: TextField(
+                      onChanged: (value) => _helpUploadController.homeChangeTitle(value),
                       style: inputTextDeco(),
                       decoration: inputDeco('글 제목'),
                       cursorColor: etBlack,
@@ -153,6 +177,7 @@ class HelpUploadScreen extends StatelessWidget {
                   SizedBox(
                     height: 280.h,
                     child: TextField(
+                      onChanged: (value) => _helpUploadController.homeChangeContent(value),
                       keyboardType: TextInputType.multiline,
                       expands: true,
                       maxLines: null,
