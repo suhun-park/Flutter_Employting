@@ -121,7 +121,7 @@ class EventUploadScreen extends StatelessWidget {
                         child: Obx(
                           () => GestureDetector(
                             onTap: controller.titleText.isNotEmpty &&
-                                    controller.descText.isNotEmpty &&
+                                    controller.contentText.isNotEmpty &&
                                     controller.isLoading == false
                                 ? () {
                                     final now = DateTime.now();
@@ -138,7 +138,7 @@ class EventUploadScreen extends StatelessWidget {
                                 fontSize: 18.sp,
                                 fontWeight: medium,
                                 color: controller.titleText.isNotEmpty &&
-                                        controller.descText.isNotEmpty &&
+                                        controller.contentText.isNotEmpty &&
                                         controller.isLoading == false
                                     ? etBlue
                                     : etLightGrey,
@@ -284,7 +284,7 @@ class EventUploadScreen extends StatelessWidget {
                           decoration: inputDeco('설명글'),
                           cursorColor: etBlack,
                           onChanged: (value) {
-                            controller.changeDesc(value);
+                            controller.changeContent(value);
                           },
                         ),
                       ),

@@ -123,7 +123,7 @@ class HomeUploadScreen extends StatelessWidget {
                           () => GestureDetector(
                             onTap: controller.titleText.isNotEmpty &&
                                     controller.companyText.isNotEmpty &&
-                                    controller.descText.isNotEmpty &&
+                                    controller.contentText.isNotEmpty &&
                                     controller.isLoading == false
                                 ? () {
                                     final now = DateTime.now();
@@ -141,7 +141,7 @@ class HomeUploadScreen extends StatelessWidget {
                                 fontWeight: medium,
                                 color: controller.titleText.isNotEmpty &&
                                         controller.companyText.isNotEmpty &&
-                                        controller.descText.isNotEmpty &&
+                                        controller.contentText.isNotEmpty &&
                                         controller.isLoading == false
                                     ? etBlue
                                     : etLightGrey,
@@ -251,7 +251,7 @@ class HomeUploadScreen extends StatelessWidget {
                         decoration: inputDeco('설명글'),
                         cursorColor: etBlack,
                         onChanged: (value) {
-                          controller.changeDesc(value);
+                          controller.changeContent(value);
                         },
                       ),
                     ),
