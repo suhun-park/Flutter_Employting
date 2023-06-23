@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -5,10 +6,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutting/constant/colors.dart';
 import 'package:flutting/constant/fonts.dart';
 import 'package:flutting/constant/named_widget.dart';
+import 'package:flutting/screen/event/controller/event_upload_controller.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class EventUploadScreen extends StatelessWidget {
-  const EventUploadScreen({Key? key}) : super(key: key);
+  EventUploadScreen({Key? key}) : super(key: key);
+
+  final EventUploadController controller = Get.put(EventUploadController());
 
   TextStyle inputTextDeco() => TextStyle(
         fontFamily: 'Pretendard',
@@ -55,6 +60,7 @@ class EventUploadScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,13 +117,32 @@ class EventUploadScreen extends StatelessWidget {
                     flex: 15,
                     child: Align(
                       alignment: Alignment.centerRight,
-                      child: Text(
-                        "완료",
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: 18.sp,
-                          fontWeight: medium,
-                          color: etBlue,
+                      child: Obx(
+                        () => GestureDetector(
+                          onTap: controller.titleText.isNotEmpty &&
+                                  controller.descText.isNotEmpty &&
+                                  controller.isLoading == false
+                              ? () {
+                                  final now = DateTime.now();
+                                  controller.uploadPost(
+                                    DateFormat('yyyyMMddHHmmss').format(now),
+                                    now,
+                                  );
+                                }
+                              : () {},
+                          child: Text(
+                            "완료",
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: 18.sp,
+                              fontWeight: medium,
+                              color: controller.titleText.isNotEmpty &&
+                                      controller.descText.isNotEmpty &&
+                                      controller.isLoading == false
+                                  ? etBlue
+                                  : etLightGrey,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -151,21 +176,76 @@ class EventUploadScreen extends StatelessWidget {
                   SizedBox(
                     height: 15.h,
                   ),
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Container(
-                        width: 96.w,
-                        height: 96.w,
-                        color: etGrey,
-                      ),
-                      const Icon(
-                        Icons.add,
-                        size: 60,
-                        color: etWhite,
-                      ),
-                    ],
-                  ),
+                  Obx(() {
+                    if (controller.imagePath.isEmpty) {
+                      return GestureDetector(
+                        onTap: () {
+                          controller.selectImage();
+                        },
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Container(
+                              width: 96.w,
+                              height: 96.w,
+                              color: etGrey,
+                            ),
+                            const Icon(
+                              Icons.add,
+                              size: 60,
+                              color: etWhite,
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      return Stack(
+                        clipBehavior: Clip.none, // 부모 위젯을 벗어나도 잘리지 않게
+                        children: [
+                          Container(
+                            width: 96.w,
+                            height: 96.w,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image:
+                                    Image.file(File(controller.imagePath.value))
+                                        .image,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          Obx(
+                            () => controller.isLoading == true
+                                ? const SizedBox()
+                                : Positioned(
+                                    top: 5.h,
+                                    right: 5.w,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        controller.removeImage();
+                                      },
+                                      child: Container(
+                                        width: 20.w,
+                                        height: 20.h,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: etWhite,
+                                        ),
+                                        child: Center(
+                                          child: Icon(
+                                            Icons.remove,
+                                            size: 15.w,
+                                            color: etBlack,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                          ),
+                        ],
+                      );
+                    }
+                  }),
                   SizedBox(
                     height: 20.h,
                   ),
@@ -175,10 +255,16 @@ class EventUploadScreen extends StatelessWidget {
                   ),
                   SizedBox(
                     height: 40.h,
-                    child: TextField(
-                      style: inputTextDeco(),
-                      decoration: inputDeco('글 제목'),
-                      cursorColor: etBlack,
+                    child: Obx(
+                      () => TextField(
+                        enabled: controller.isLoading == true ? false : true,
+                        style: inputTextDeco(),
+                        decoration: inputDeco('글 제목'),
+                        cursorColor: etBlack,
+                        onChanged: (value) {
+                          controller.changeTitle(value);
+                        },
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -186,14 +272,20 @@ class EventUploadScreen extends StatelessWidget {
                   ),
                   SizedBox(
                     height: 280.h,
-                    child: TextField(
-                      keyboardType: TextInputType.multiline,
-                      expands: true,
-                      maxLines: null,
-                      textAlignVertical: TextAlignVertical.top,
-                      style: inputTextDeco(),
-                      decoration: inputDeco('설명글'),
-                      cursorColor: etBlack,
+                    child: Obx(
+                      () => TextField(
+                        enabled: controller.isLoading == true ? false : true,
+                        keyboardType: TextInputType.multiline,
+                        expands: true,
+                        maxLines: null,
+                        textAlignVertical: TextAlignVertical.top,
+                        style: inputTextDeco(),
+                        decoration: inputDeco('설명글'),
+                        cursorColor: etBlack,
+                        onChanged: (value) {
+                          controller.changeDesc(value);
+                        },
+                      ),
                     ),
                   ),
                   SizedBox(

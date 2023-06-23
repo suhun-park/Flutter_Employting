@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         heroTag: 'homeFAB',
         onPressed: () {
-          Get.to(() => const HomeUploadScreen());
+          Get.to(() => HomeUploadScreen());
         },
         child: Icon(
           Icons.add,

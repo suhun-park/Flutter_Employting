@@ -1,15 +1,20 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutting/constant/colors.dart';
 import 'package:flutting/constant/fonts.dart';
+import 'package:flutting/screen/home/controller/home_upload_controller.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../constant/named_widget.dart';
 
 class HomeUploadScreen extends StatelessWidget {
-  const HomeUploadScreen({super.key});
+  HomeUploadScreen({super.key});
+
+  final HomeUploadController controller = Get.put(HomeUploadController());
 
   TextStyle inputTextDeco() => TextStyle(
         fontFamily: 'Pretendard',
@@ -56,6 +61,7 @@ class HomeUploadScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -162,24 +168,38 @@ class HomeUploadScreen extends StatelessWidget {
                   SizedBox(
                     height: 20.h,
                   ),
-                  Container(
-                    height: 40.h,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 1.w,
-                        color: etLightGrey,
+                  GestureDetector(
+                    onTap: () {
+                      showCupertinoModalPopup(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return CupertinoDatePicker(
+                                mode: CupertinoDatePickerMode.date,
+                                initialDateTime: DateTime.now(),
+                                onDateTimeChanged: (DateTime newDate) {
+                                  controller.changeEndDate(newDate);
+                                });
+                          });
+                    },
+                    child: Container(
+                      height: 40.h,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1.w,
+                          color: etLightGrey,
+                        ),
                       ),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 8.h,
-                        horizontal: 10.w,
-                      ),
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: Text(
-                          '마감일',
-                          style: inputTextDeco(),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 8.h,
+                          horizontal: 10.w,
+                        ),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Text(
+                            '마감일: ${DateFormat('yyyy. M. d', 'ko_KR').format(controller.endDate as DateTime)}',
+                            style: inputTextDeco(),
+                          ),
                         ),
                       ),
                     ),
