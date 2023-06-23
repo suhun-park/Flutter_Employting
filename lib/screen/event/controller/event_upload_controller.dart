@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutting/main.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -42,7 +43,7 @@ class EventUploadController extends GetxController {
         final UploadTask uploadTask = FirebaseStorage.instance
             .ref()
             .child(
-                'event/${id}_201930306/${id}_201930306.${imagePath.value.split('.').last}')
+                'event/${id}_$number/${id}_$number.${imagePath.value.split('.').last}')
             .putData(File(imagePath.value).readAsBytesSync());
         // 만약 사진 업로드 성공 시
         final TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
@@ -53,21 +54,24 @@ class EventUploadController extends GetxController {
       }
 
       final data = {
-        'uid': 'testUID',
-        'id': id,
-        'number': '201930306',
-        'nickName': 'nickname_test',
+        'uid': uid,
+        'id': '${id}_$number',
+        'number': number,
+        'nickName': nickName,
         'title': titleText.value,
         'content': contentText.value,
         'dateTime': dateTime,
-        'dept': '컴퓨터정보학부',
+        'dept': dept,
       };
 
       if (imagePath.value != "") {
         data['image'] = url;
       }
 
-      await FirebaseFirestore.instance.collection('event').doc(id).set(data);
+      await FirebaseFirestore.instance
+          .collection('event')
+          .doc('${id}_$number')
+          .set(data);
 
       isLoading = false.obs;
       imagePath = "".obs;

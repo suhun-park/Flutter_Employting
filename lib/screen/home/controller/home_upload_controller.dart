@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutting/main.dart';
 import 'package:get/get.dart';
 
 class HomeUploadController extends GetxController {
@@ -7,8 +8,6 @@ class HomeUploadController extends GetxController {
   Rx<DateTime> endDate = DateTime(2099, 12, 31).obs;
   RxString companyText = "".obs;
   RxString contentText = "".obs;
-
-
 
   void changeTitle(value) {
     titleText.value = value;
@@ -30,17 +29,20 @@ class HomeUploadController extends GetxController {
     print('upload start');
     isLoading = true.obs;
     try {
-      await FirebaseFirestore.instance.collection('home').doc(id).set({
-        'uid': 'testUID',
-        'id': id,
-        'number': '201930306',
-        'nickName': '대림대학교 취업팀',
+      await FirebaseFirestore.instance
+          .collection('home')
+          .doc('${id}_$number')
+          .set({
+        'uid': uid,
+        'id': '${id}_$number',
+        'number': number,
+        'nickName': nickName,
         'title': titleText.value,
         'content': contentText.value,
         'company': companyText.value,
         'dateTime': dateTime,
         'endDate': endDate.value,
-        'dept': '컴퓨터정보학부',
+        'dept': dept,
       });
       isLoading = false.obs;
       titleText = "".obs;
@@ -53,6 +55,5 @@ class HomeUploadController extends GetxController {
       print(e.toString());
       isLoading = false.obs;
     }
-
   }
 }

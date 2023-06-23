@@ -137,7 +137,7 @@ class EventDetailScreen extends StatelessWidget {
                             height: 20.h,
                           ),
                           Text(
-                            dept,
+                            '$dept · $nickName',
                             style: TextStyle(
                               fontFamily: 'Pretendard',
                               fontSize: 18.sp,

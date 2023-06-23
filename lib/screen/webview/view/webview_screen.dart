@@ -31,41 +31,45 @@ class _WebViewScreenState extends State<WebViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-            child: Column(children: [
-      Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: SafeArea(
+        child: Column(
           children: [
-            GestureDetector(
-              onTap: () async {
-                if (await controller.canGoBack()) {
-                  controller.goBack();
-                }
-              },
-              child: Icon(Icons.arrow_back_ios, size: 28.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      if (await controller.canGoBack()) {
+                        controller.goBack();
+                      }
+                    },
+                    child: Icon(Icons.arrow_back_ios, size: 28.h),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      controller.reload();
+                    },
+                    child: Icon(Icons.refresh, size: 32.h),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      controller.loadRequest(
+                          Uri.parse('https://job.daelim.ac.kr/index.do'));
+                    },
+                    child: Icon(Icons.home, size: 32.h),
+                  ),
+                ],
+              ),
             ),
-            GestureDetector(
-              onTap: () {
-                controller.reload();
-              },
-              child: Icon(Icons.refresh, size: 32.h),
-            ),
-            GestureDetector(
-              onTap: () {
-                controller.loadRequest(
-                    Uri.parse('https://job.daelim.ac.kr/index.do'));
-              },
-              child: Icon(Icons.home, size: 32.h),
-            ),
+            Expanded(
+                child: WebViewWidget(
+              controller: controller,
+            ))
           ],
         ),
       ),
-      Expanded(
-          child: WebViewWidget(
-        controller: controller,
-      ))
-    ])));
+    );
   }
 }

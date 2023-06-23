@@ -8,17 +8,18 @@ import 'package:flutting/constant/named_widget.dart';
 import 'package:get/get.dart';
 
 class HelpDetailScreen extends StatelessWidget {
-
   const HelpDetailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final String title = Get.arguments[0];
     final String content = Get.arguments[1];
-    final String nickName =Get.arguments[2];
+    final String nickName = Get.arguments[2];
     final String dept = Get.arguments[3];
     final String pdf = Get.arguments[4];
     final String formatDate = Get.arguments[5];
+
+    print(pdf.toString());
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -60,7 +61,8 @@ class HelpDetailScreen extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 70,
-                    child: Text(title,
+                    child: Text(
+                      title,
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -95,7 +97,8 @@ class HelpDetailScreen extends StatelessWidget {
                       SizedBox(
                         height: 32.5.h,
                       ),
-                      Text(title,
+                      Text(
+                        title,
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: 21.sp,
@@ -103,46 +106,51 @@ class HelpDetailScreen extends StatelessWidget {
                           color: etBlack,
                         ),
                       ),
-                      SizedBox(
-                        height: 25.h,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: etLightGrey,
-                          borderRadius: BorderRadius.circular(5.r),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 8.w,
-                            vertical: 8.w,
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Image.asset(
-                                'assets/images/icon/pdf_icon.png',
-                                height: 18.h,
+                      pdf == ""
+                          ? const SizedBox()
+                          : SizedBox(
+                              height: 25.h,
+                            ),
+                      pdf == ""
+                          ? const SizedBox()
+                          : Container(
+                              decoration: BoxDecoration(
+                                color: etLightGrey,
+                                borderRadius: BorderRadius.circular(5.r),
                               ),
-                              SizedBox(
-                                width: 7.w,
-                              ),
-                              Text(
-                                '자기소개서 PDF 확인',
-                                style: TextStyle(
-                                  fontFamily: 'Pretendard',
-                                  fontSize: 13.sp,
-                                  fontWeight: medium,
-                                  color: etWhite,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 8.w,
+                                  vertical: 8.w,
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/icon/pdf_icon.png',
+                                      height: 18.h,
+                                    ),
+                                    SizedBox(
+                                      width: 7.w,
+                                    ),
+                                    Text(
+                                      '자기소개서 PDF 확인',
+                                      style: TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: 13.sp,
+                                        fontWeight: medium,
+                                        color: etWhite,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
+                            ),
                       SizedBox(
                         height: 15.h,
                       ),
-                      Text(content,
+                      Text(
+                        content,
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: 16.sp,
@@ -154,7 +162,7 @@ class HelpDetailScreen extends StatelessWidget {
                         height: 20.h,
                       ),
                       Text(
-                        dept,
+                        '$dept · $nickName',
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontSize: 18.sp,
