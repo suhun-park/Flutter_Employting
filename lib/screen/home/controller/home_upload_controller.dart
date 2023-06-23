@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 class HomeUploadController extends GetxController {
   RxBool isLoading = false.obs;
   RxString titleText = "".obs;
-  var endDate = DateTime.now().obs;
+  var endDate = DateTime(2099, 12, 31).obs;
   RxString companyText = "".obs;
   RxString descText = "".obs;
 
@@ -28,7 +28,7 @@ class HomeUploadController extends GetxController {
     print('upload start');
     isLoading = true.obs;
     try {
-      await FirebaseFirestore.instance.collection('event').doc(id).set({
+      await FirebaseFirestore.instance.collection('home').doc(id).set({
         'uid': 'testUID',
         'id': id,
         'number': '201930306',
