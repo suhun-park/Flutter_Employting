@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutting/constant/colors.dart';
 import 'package:flutting/constant/fonts.dart';
 import 'package:flutting/constant/named_widget.dart';
@@ -57,9 +59,143 @@ class MyUserScreen extends GetView<MyUserController> {
         ),
       );
 
+  final List<String> _deptList = [
+    '기계과',
+    '건축과',
+    '경영과',
+    '도서미디어정보과',
+    '미래자동차학부',
+    '반도체과',
+    '방송음향영상학부',
+    '보건안전과',
+    '보건의료기기과',
+    '보건의료행정과',
+    '사무행정과',
+    '사회복지과',
+    '소방안전설비과',
+    '스마트팩토리과',
+    '스포츠지도과',
+    '실내디자인학부',
+    '언어치료과',
+    '유아교육보육학부',
+    '전기과',
+    '전자통신과',
+    '컴퓨터정보학부',
+    '토목환경과',
+    '항공서비스과',
+    '해군기술부사관과',
+    '호텔레저과',
+    '호텔조리제과학부',
+  ];
+
   @override
   Widget build(BuildContext context) {
-    final MyUserController myUserController = Get.put(MyUserController());
+    void updateUserData() async {
+      controller.isLoading.value = true;
+      try {
+        DocumentSnapshot myData =
+            await FirebaseFirestore.instance.collection('user').doc(uid).get();
+        if ((myData.data() as Map<String, dynamic>).containsKey('changed')) {
+          controller.isLoading.value = false;
+          showCupertinoDialog(
+            context: context,
+            builder: (context) {
+              return CupertinoAlertDialog(
+                title: const Text('오류'),
+                content: const Text('이미 변경 이력이 있는 계정입니다.'),
+                actions: [
+                  CupertinoDialogAction(
+                    child: const Text('확인'),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  )
+                ],
+              );
+            },
+          );
+          return;
+        } else {
+          QuerySnapshot snapshot = await FirebaseFirestore.instance
+              .collection('user')
+              .where('nickName', isEqualTo: controller.nickNameText.value)
+              .get();
+          if (snapshot.docs.isNotEmpty) {
+            controller.isLoading.value = false;
+            showCupertinoDialog(
+              context: context,
+              builder: (context) {
+                return CupertinoAlertDialog(
+                  title: const Text('오류'),
+                  content: const Text('중복된 닉네임입니다.'),
+                  actions: [
+                    CupertinoDialogAction(
+                      child: const Text('확인'),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
+                );
+              },
+            );
+            return;
+          } else {
+            FirebaseFirestore.instance.collection('user').doc(uid).update({
+              'nickName': controller.nickNameText.value,
+              'dept': controller.deptText.value,
+              'changed': true,
+            });
+            await const FlutterSecureStorage()
+                .write(key: "nickName", value: controller.nickNameText.value);
+            await const FlutterSecureStorage()
+                .write(key: "dept", value: controller.deptText.value);
+
+            nickName = await const FlutterSecureStorage().read(key: 'nickName');
+            dept = await const FlutterSecureStorage().read(key: 'dept');
+            controller.isLoading.value = false;
+            showCupertinoDialog(
+              context: context,
+              builder: (context) {
+                return CupertinoAlertDialog(
+                  title: const Text('알림'),
+                  content: const Text('변경이 완료되었습니다.'),
+                  actions: [
+                    CupertinoDialogAction(
+                      child: const Text('확인'),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
+                );
+              },
+            );
+          }
+        }
+      } catch (e) {
+        controller.isLoading.value = false;
+        showCupertinoDialog(
+          context: context,
+          builder: (context) {
+            return CupertinoAlertDialog(
+              title: const Text('오류'),
+              content: const Text('변경 중 오류가 발생했습니다.'),
+              actions: [
+                CupertinoDialogAction(
+                  child: const Text('확인'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                )
+              ],
+            );
+          },
+        );
+        return;
+      }
+    }
+
     return Scaffold(
         body: SafeArea(
       child: SingleChildScrollView(
@@ -71,7 +207,7 @@ class MyUserScreen extends GetView<MyUserController> {
               height: 10.h,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30.25.w),
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -94,10 +230,48 @@ class MyUserScreen extends GetView<MyUserController> {
                       ),
                     ),
                   ),
-                  const Expanded(
+                  Expanded(
                     flex: 15,
                     child: Align(
-                        alignment: Alignment.centerRight, child: SizedBox()),
+                      alignment: Alignment.centerRight,
+                      child: GestureDetector(
+                        onTap: () {
+                          showCupertinoDialog(
+                            context: context,
+                            builder: (context) {
+                              return CupertinoAlertDialog(
+                                title: const Text('알림'),
+                                content: const Text(
+                                    '내 정보 변경은 한 번밖에 변경이 불가능합니다.\n계속 하시겠습니까?'),
+                                actions: [
+                                  CupertinoDialogAction(
+                                    child: const Text('취소'),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  CupertinoDialogAction(
+                                    child: const Text('확인'),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                      updateUserData();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: Text(
+                          "저장",
+                          style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: 18.sp,
+                              fontWeight: medium,
+                              color: etBlue),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -134,7 +308,9 @@ class MyUserScreen extends GetView<MyUserController> {
                       style: inputTextDeco(),
                       decoration: inputDeco('닉네임'),
                       cursorColor: etBlack,
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        controller.changeNickName(value);
+                      },
                     ),
                   ),
                   SizedBox(
@@ -234,14 +410,55 @@ class MyUserScreen extends GetView<MyUserController> {
                   SizedBox(
                     height: 10.h,
                   ),
-                  TextContainerLayout(
-                    child: Text(
-                      dept!,
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontFamily: 'Pretendard',
-                        fontWeight: medium,
-                        color: etBlack,
+                  GestureDetector(
+                    onTap: controller.isLoading.value == true
+                        ? null
+                        : () {
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (_) {
+                                  return SizedBox(
+                                    height: 300.h,
+                                    child: CupertinoPicker(
+                                      backgroundColor: Colors.white,
+                                      onSelectedItemChanged: (index) {
+                                        controller.changeDept(_deptList[index]);
+                                      },
+                                      itemExtent: 40.h,
+                                      children: _deptList.map((value) {
+                                        return Center(child: Text(value));
+                                      }).toList(),
+                                    ),
+                                  );
+                                });
+                          },
+                    child: Container(
+                      height: 40.h,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1.w, color: etDarkGrey),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10.w,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Obx(
+                              () => Text(
+                                controller.deptText.value == ""
+                                    ? "학과"
+                                    : controller.deptText.value,
+                                style: inputTextDeco(),
+                              ),
+                            ),
+                            Icon(
+                              Icons.arrow_drop_down_sharp,
+                              size: 30.h,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -251,31 +468,7 @@ class MyUserScreen extends GetView<MyUserController> {
                   divider,
                   SizedBox(height: 20.h),
                   GestureDetector(
-                    onTap: () {
-                      showCupertinoDialog(
-                        context: context,
-                        builder: (context) {
-                          return CupertinoAlertDialog(
-                            title: const Text('알림'),
-                            content: const Text('정말 변경하시겠습니까?'),
-                            actions: [
-                              CupertinoDialogAction(
-                                child: const Text('취소'),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                              CupertinoDialogAction(
-                                child: const Text('확인'),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
+                    onTap: () {},
                     child: Text(
                       "로그아웃",
                       style: TextStyle(
