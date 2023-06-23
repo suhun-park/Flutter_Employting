@@ -23,9 +23,15 @@ class SplashScreen extends StatelessWidget {
                 flex: 15,
                 child: SizedBox(),
               ),
-              const Expanded(
+              Expanded(
                 flex: 70,
-                child: Center(),
+                child: Center(
+                  child: Image.asset(
+                    'assets/images/logo/logo.png',
+                    width: 183.w,
+                    height: 183.w,
+                  ),
+                ),
               ),
               Expanded(
                 flex: 15,

@@ -14,8 +14,8 @@ class TextContainerLayout extends StatelessWidget {
       height: 40.h,
       decoration: BoxDecoration(
         border: Border.all(
-          width: 0.1,
-          color: etBlack,
+          width: 1.w,
+          color: etDarkGrey,
         ),
       ),
       child: Padding(

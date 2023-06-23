@@ -9,7 +9,10 @@
     <key>NSDocumentsFolderUsageDescription</key>
     <string>Access is required to select files for upload.</string>
 	<key>NSAppTransportSecurity</key>
-	<key>NSAllowsArbitraryLoads</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

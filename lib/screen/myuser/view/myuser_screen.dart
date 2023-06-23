@@ -1,21 +1,65 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutting/constant/colors.dart';
 import 'package:flutting/constant/fonts.dart';
 import 'package:flutting/constant/named_widget.dart';
+import 'package:flutting/main.dart';
 import 'package:flutting/screen/myuser/controller/myuser_controller.dart';
 import 'package:flutting/screen/myuser/layout/text_container_layout.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
 
 class MyUserScreen extends GetView<MyUserController> {
-  const MyUserScreen({Key? key}) : super(key: key);
+  MyUserScreen({Key? key}) : super(key: key);
 
+  @override
+  final MyUserController controller = Get.put(MyUserController());
+
+  TextStyle inputTextDeco() => TextStyle(
+        fontFamily: 'Pretendard',
+        fontSize: 18.sp,
+        fontWeight: medium,
+        color: etBlack,
+      );
+
+  InputDecoration inputDeco(String? hintText) => InputDecoration(
+        hintText: hintText,
+        hintStyle: TextStyle(
+          fontFamily: 'Pretendard',
+          fontSize: 18.sp,
+          fontWeight: medium,
+          color: etBlack,
+        ),
+        contentPadding: EdgeInsets.symmetric(
+          vertical: 10.h,
+          horizontal: 10.w,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.zero,
+          borderSide: BorderSide(
+            width: 1.w,
+            color: etDarkGrey,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.zero,
+          borderSide: BorderSide(
+            width: 1.w,
+            color: etDarkGrey,
+          ),
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.zero,
+          borderSide: BorderSide(
+            width: 1.w,
+            color: etDarkGrey,
+          ),
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
-    final MyUserController  _myUserController = Get.put(MyUserController());
+    final MyUserController myUserController = Get.put(MyUserController());
     return Scaffold(
         body: SafeArea(
       child: SingleChildScrollView(
@@ -72,22 +116,14 @@ class MyUserScreen extends GetView<MyUserController> {
                   SizedBox(
                     height: 30.h,
                   ),
-                  GetBuilder<MyUserController>(
-                    builder: (context) {
-                      if (_myUserController.myUserList.isNotEmpty) {
-                        return SizedBox(
-                          child: Text(_myUserController.myUserList[0].email!,
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontFamily: 'Pretendard',
-                              fontWeight: medium,
-                            ),
-                          ),
-                        );
-                      } else {
-                        return SizedBox(); // 데이터가 없을 경우 빈 컨테이너 반환
-                      }
-                    },
+                  Text(
+                    "닉네임",
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontFamily: 'Pretendard',
+                      fontWeight: medium,
+                      color: etBlack,
+                    ),
                   ),
                   SizedBox(
                     height: 10.h,
@@ -95,61 +131,10 @@ class MyUserScreen extends GetView<MyUserController> {
                   SizedBox(
                     height: 40.h,
                     child: TextField(
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: 18.sp,
-                        fontWeight: medium,
-                        color: etBlack,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: '닉네임',
-                        hintStyle: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontSize: 18.sp,
-                          fontWeight: medium,
-                          color: etBlack,
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: 10.h,
-                          horizontal: 12.w,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.zero,
-                          borderSide: BorderSide(
-                            width: 1.w,
-                            color: etLightGrey,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.zero,
-                          borderSide: BorderSide(
-                            width: 1.w,
-                            color: etLightGrey,
-                          ),
-                        ),
-                        disabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.zero,
-                          borderSide: BorderSide(
-                            width: 1.w,
-                            color: etDarkGrey,
-                          ),
-                        ),
-                        suffixIcon: Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 8.h,
-                          ),
-                          child: Text(
-                            "완료",
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: 18.sp,
-                              fontWeight: medium,
-                              color: etBlue,
-                            ),
-                          ),
-                        ),
-                      ),
+                      style: inputTextDeco(),
+                      decoration: inputDeco('닉네임'),
                       cursorColor: etBlack,
+                      onChanged: (value) {},
                     ),
                   ),
                   SizedBox(
@@ -169,7 +154,7 @@ class MyUserScreen extends GetView<MyUserController> {
                   ),
                   TextContainerLayout(
                     child: Text(
-                      "이메일",
+                      email!,
                       style: TextStyle(
                         fontSize: 18.sp,
                         fontFamily: 'Pretendard',
@@ -195,7 +180,7 @@ class MyUserScreen extends GetView<MyUserController> {
                   ),
                   TextContainerLayout(
                     child: Text(
-                      "학번",
+                      number!,
                       style: TextStyle(
                         fontSize: 18.sp,
                         fontFamily: 'Pretendard',
@@ -208,7 +193,7 @@ class MyUserScreen extends GetView<MyUserController> {
                     height: 20.h,
                   ),
                   Text(
-                    "구분",
+                    '구분',
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontFamily: 'Pretendard',
@@ -221,7 +206,11 @@ class MyUserScreen extends GetView<MyUserController> {
                   ),
                   TextContainerLayout(
                     child: Text(
-                      "구분",
+                      number!.length == 7
+                          ? '교수'
+                          : number!.length == 9
+                              ? '학생'
+                              : '기타',
                       style: TextStyle(
                         fontSize: 18.sp,
                         fontFamily: 'Pretendard',
@@ -234,7 +223,7 @@ class MyUserScreen extends GetView<MyUserController> {
                     height: 20.h,
                   ),
                   Text(
-                    "학과",
+                    '학과',
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontFamily: 'Pretendard',
@@ -247,7 +236,7 @@ class MyUserScreen extends GetView<MyUserController> {
                   ),
                   TextContainerLayout(
                     child: Text(
-                      "학과",
+                      dept!,
                       style: TextStyle(
                         fontSize: 18.sp,
                         fontFamily: 'Pretendard',
@@ -261,13 +250,40 @@ class MyUserScreen extends GetView<MyUserController> {
                   ),
                   divider,
                   SizedBox(height: 20.h),
-                  Text(
-                    "로그아웃",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: etLightGrey,
-                      fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.w500,
+                  GestureDetector(
+                    onTap: () {
+                      showCupertinoDialog(
+                        context: context,
+                        builder: (context) {
+                          return CupertinoAlertDialog(
+                            title: const Text('알림'),
+                            content: const Text('정말 변경하시겠습니까?'),
+                            actions: [
+                              CupertinoDialogAction(
+                                child: const Text('취소'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              CupertinoDialogAction(
+                                child: const Text('확인'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: Text(
+                      "로그아웃",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: etLightGrey,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ],
